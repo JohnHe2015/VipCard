@@ -1,7 +1,7 @@
 import React from 'react';
 import {Row,Col} from 'antd';
 import SideBar from './../SideBar';
-import './index.css';
+import './index.less';
 
 class Main extends React.Component{
     constructor(props)
@@ -13,10 +13,10 @@ class Main extends React.Component{
         return(
             <div className="main-container">
                 <Row>
-                    <Col span={6}>
+                    <Col span={4}>
                         <SideBar />
                     </Col>
-                    <Col span={18}>content</Col>
+                    <Col span={20}>content</Col>
                 </Row>
             </div>
         )

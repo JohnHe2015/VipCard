@@ -1,6 +1,7 @@
 import React from 'react';
 import {Menu,Icon} from 'antd';
 import menuConfig from './../../config/menuConfig';
+import './index.less';
 const SubMenu = Menu.SubMenu;
 
 export default class SideBar extends React.Component{
@@ -41,7 +42,7 @@ export default class SideBar extends React.Component{
 
     render(){
         return(
-            <div>
+            <div  className="sidebar-container">
                 <Menu theme="dark">
                     {this.state.dom}
                 </Menu>

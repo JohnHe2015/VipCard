@@ -1,5 +1,5 @@
 import React from 'react';
-import './index.css';
+import './index.less';
 import {Col,Row} from 'antd';
 
 class Header extends React.Component{
