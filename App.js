@@ -1,6 +1,7 @@
 import React from 'react';
 //import Clock from './src/components/Clock';
 import Header from './src/components/Header';
+import Main from './src/components/Main';
 
 
 class App extends React.Component{
@@ -8,6 +9,7 @@ class App extends React.Component{
         return(
             <div>
                 <Header />
+                <Main />
             </div>
         );
     }
