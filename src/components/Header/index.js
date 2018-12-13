@@ -9,7 +9,7 @@ class Header extends React.Component{
 
     render(){
         return(
-            <div className="header">
+            <div className="header-container">
                 <Row>
                     <Col span={24}>fisrt column</Col>
                 </Row>
