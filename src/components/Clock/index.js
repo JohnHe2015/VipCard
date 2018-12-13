@@ -1,5 +1,6 @@
 import React from 'react';
 import './index.css';
+import {Button} from 'antd';
 
 class Clock extends React.Component{
     constructor(props){
@@ -27,7 +28,7 @@ class Clock extends React.Component{
     render(){
         return(
             <div className="clock">
-                <p>Hello World</p>
+                <Button>Hello World</Button>
                 <div>
                     {this.state.date.toLocaleTimeString()}
                 </div>
