@@ -13,14 +13,8 @@ class Main extends React.Component{
     render(){
         return(
             <div className="main-container">
-                <Row>
-                    <Col span={4}>
-                        <SideBar />
-                    </Col>
-                    <Col span={20}>
-                        <Content />
-                    </Col>
-                </Row>
+                <SideBar />
+                <Content />
             </div>
         )
     }
