@@ -1,6 +1,7 @@
 import React from 'react';
 import {Row,Col} from 'antd';
 import SideBar from './../SideBar';
+import Content from './../Content';
 import './index.less';
 
 class Main extends React.Component{
@@ -16,7 +17,9 @@ class Main extends React.Component{
                     <Col span={4}>
                         <SideBar />
                     </Col>
-                    <Col span={20}>content</Col>
+                    <Col span={20}>
+                        <Content />
+                    </Col>
                 </Row>
             </div>
         )

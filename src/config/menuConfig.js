@@ -18,7 +18,7 @@ const menuConfig = [
     {
         "title" : "antd测试",
         "key" : "/admin/test",
-        "Icon" : "user",
+        "Icon" : "line-chart",
         "children" : [
             {
                 "title" : "按钮测试",

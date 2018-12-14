@@ -1,4 +1,45 @@
 .header-container{
-    background: #cccccc;
+    background: #ffffff;
     height: 70px;
+    box-shadow: 0 0 20px rgba(0,0,128,0.8);
+    .header-right{
+        float: right;
+        height: 70px;
+        margin-right: 70px;
+        ul{
+            list-style: none;
+            text-align: center;
+            &:after{
+                content: " "; 
+                clear: both;
+                display: table;
+            }
+            li{
+                float: left;
+                line-height: 70px;
+                width: 60px;
+                font-size: 18px;
+                cursor: pointer;
+                a{
+                    color: #5C6B77 
+                }
+                a:hover{
+                    color: #000000;
+                }
+            }
+        }
+    }
+    &:after{
+        content: " ";
+        clear: both;
+        display: table;
+    }
+}
+.logo{
+    img{
+        width: 66%;
+        height: 46px;
+        cursor: pointer;
+        margin: 10px 20px;
+    }
 }

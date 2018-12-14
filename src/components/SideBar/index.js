@@ -25,7 +25,7 @@ export default class SideBar extends React.Component{
             if(item.children)
             {
                 return (
-                    <SubMenu title={<Icon type={item.Icon} /> } key={item.key}>
+                    <SubMenu title={<span><Icon type={item.Icon} /><span>{item.title}</span></span> } key={item.key}>
                         {this.renderMenu (item.children)}
                     </SubMenu>
                     
