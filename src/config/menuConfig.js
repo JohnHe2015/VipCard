@@ -5,9 +5,21 @@ const menuConfig = [
         "Icon" : "home"
     },
     {
-        "title" : "会员审批",
-        "key" : "/admin/pass",
+        "title" : "会员注册",
+        "key" : "/admin/register",
+        "Icon" : "smile"
+
+    },
+    {
+        "title" : "会员管理",
+        "key" : "/admin/manager",
         "Icon" : "setting"
+
+    },
+    {
+        "title" : "优惠券管理",
+        "key" : "/admin/coupon",
+        "Icon" : "heart"
 
     },
     {

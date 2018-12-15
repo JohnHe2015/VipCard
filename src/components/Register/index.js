@@ -1,6 +1,7 @@
 import React from 'react';
-import {Card, Form, Input, Button, Col, Row, Icon} from 'antd';
+import {Card, Form, Input, Button, Col, Row, Icon, DatePicker} from 'antd';
 import './index.less';
+import axios from 'axios';
 const FormItem = Form.Item;
 
 export default class Register extends React.Component{
@@ -8,6 +9,23 @@ export default class Register extends React.Component{
     {
         super(props);
     }
+    handleSubmit(e) {
+        e.preventDefault();
+        axios.post('http://localhost:8081/user/post',{
+            username: document.getElementById('username').value,
+            password: document.getElementById('password').value,
+            mobile: document.getElementById('mobile').value,
+            sex: document.getElementById('sex').value,
+            birthday: document.getElementById('birthday').children[0].children[0].value
+     
+        })
+        .then((response)=>{
+            console.log(response);
+        })
+        .catch((err)=>{
+            console.log(err);
+        });
+      }
 
     render(){
         return(
@@ -24,15 +42,15 @@ export default class Register extends React.Component{
                         <Card title="表单" bordered={false}>
                             <Row>
                                 <Col span={6} offset={8}>
-                                    <Form layout="verctical" >
+                                    <Form layout="vertical" onSubmit={this.handleSubmit}>
                                         <FormItem >
-                                            <Input prefix={<Icon type="user" />} placeholder="用户名" id="userName" name="userName" />
+                                            <Input prefix={<Icon type="user" />} placeholder="用户名" id="username" name="username" />
                                         </FormItem>
                                         <FormItem >
-                                            <Input prefix={<Icon type="phone" />} placeholder="电话" id="tel" name="tel" />
+                                            <Input prefix={<Icon type="phone" />} placeholder="电话" id="mobile" name="mobile" />
                                         </FormItem>
                                         <FormItem >
-                                            <Input prefix={<Icon type="star" />} placeholder="生日" id="birthday" name="birthday" />
+                                            <DatePicker placeholder="生日" id="birthday" name="birthday" />
                                         </FormItem>
                                         <FormItem >
                                             <Input prefix={<Icon type="heart" />} placeholder="性别" id="sex" name="sex" />
@@ -41,7 +59,7 @@ export default class Register extends React.Component{
                                             <Input prefix={<Icon type="lock" />} placeholder="密码" id="password" name="password" />
                                         </FormItem>
                                         <FormItem >
-                                            <Button type="primary" style={{marginLeft:"40%"}}>注册</Button>
+                                            <Button htmlType="submit" type="primary" style={{marginLeft:"40%"}}>注册</Button>
                                         </FormItem>
                                     </Form>
                                 </Col>

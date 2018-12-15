@@ -2,6 +2,7 @@
  import {HashRouter , Switch, Route} from 'react-router-dom';
  import Admin from './src/components/Admin';
  import Register from './src/components/Register';
+ import User from './src/components/User';
  import NoMatch from './src/components/Page404';
  import App from './App';
 
@@ -13,8 +14,11 @@
                      <Switch>
                         <Route path="/admin" render={()=>
                             <Admin>
-                                <Route path="/admin/pass" component={Register} />
-                                <Route  component={NoMatch} />
+                                <Switch>
+                                    <Route exact={true} path="/admin/register" component={Register} />
+                                    <Route exact={true} path="/admin/manager" component={User} />
+                                    <Route component={NoMatch} />
+                                </Switch>
                             </Admin>
                         } />
                         
