@@ -1,7 +1,7 @@
 const menuConfig = [
     {
         "title" : "首页",
-        "key" : "/admin/main",
+        "key" : "/admin",
         "Icon" : "home"
     },
     {

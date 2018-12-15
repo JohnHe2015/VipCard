@@ -2,6 +2,7 @@ import React from 'react';
 import {Menu,Icon} from 'antd';
 import menuConfig from './../../config/menuConfig';
 import './index.less';
+import {Link} from 'react-router-dom';
 const SubMenu = Menu.SubMenu;
 
 export default class SideBar extends React.Component{
@@ -33,8 +34,10 @@ export default class SideBar extends React.Component{
             }
             return (
                 <Menu.Item key={item.key}>
-                    <Icon type={item.Icon}></Icon>
-                    {item.title}
+                    <Link to={item.key}>
+                        <Icon type={item.Icon}></Icon>
+                        {item.title}
+                    </Link>
                 </Menu.Item>
             )
         })
