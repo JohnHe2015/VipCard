@@ -5,7 +5,7 @@ import axios from 'axios';
 const FormItem = Form.Item;
 message.config({
     top: 200,
-    duration: 5,
+    duration: 3,
     maxCount: 3,
   });
 const success = ()=>{

@@ -19,6 +19,7 @@ export default class Approval extends React.Component{
             confirmLoading: false,
             delData : this.delData.bind(this),
             getData : this.getData.bind(this),
+            handleOk : this.handleOk.bind(this),
             columns : [
                 {
                     title:"用户名",
@@ -51,7 +52,7 @@ export default class Approval extends React.Component{
                         <Modal 
                             title="请输入消费金额和拍摄类型 :"
                             visible={this.state.visible}
-                            onOk={this.handleOk.bind(this)}
+                            onOk={this.state.handleOk}
                             confirmLoading={this.state.confirmLoading}
                             onCancel={this.handleCancel.bind(this)}>
                             <InputNumber  style={{marginLeft:100,width:130,marginBottom:10}} placeholder="请输入金额" id="amount" name="amount" defaultValue={0}
@@ -109,17 +110,19 @@ export default class Approval extends React.Component{
         });
     }
 
-    handleOk(){
-        this.setState({
-          ModalText: 'The modal will be closed after two seconds',
-          confirmLoading: true,
-        });
-        setTimeout(() => {
-          this.setState({
-            visible: false,
-            confirmLoading: false,
-          });
-        }, 2000);
+    handleOk=(record)=>{
+        console.log(record);
+        // this.setState({
+        //   ModalText: 'The modal will be closed after two seconds',
+        //   confirmLoading: true,
+        // });
+        // setTimeout(() => {
+        //   this.setState({
+        //     visible: false,
+        //     confirmLoading: false,
+        //   });
+        // }, 1000);
+        
       }
     
       handleCancel(){
