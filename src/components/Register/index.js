@@ -56,7 +56,7 @@ export default class Register extends React.Component{
                                             <Input prefix={<Icon type="heart" />} placeholder="性别" id="sex" name="sex" />
                                         </FormItem>
                                         <FormItem >
-                                            <Input prefix={<Icon type="lock" />} placeholder="密码" id="password" name="password" />
+                                            <Input prefix={<Icon type="lock" />} placeholder="密码" id="password" name="password" type="password"/>
                                         </FormItem>
                                         <FormItem >
                                             <Button htmlType="submit" type="primary" style={{marginLeft:"40%"}}>注册</Button>

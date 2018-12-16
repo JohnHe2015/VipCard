@@ -8,19 +8,31 @@ var data ;
 
 
 export default class User extends React.Component{
-    componentWillMount(){
-        axios.get('http://localhost:8081/user/get',{
+    constructor(props){
+        super(props);
+        this.state = {
+            dataSource : []
+        }
+    }
 
+    componentDidMount(){
+        this.getData();
+    }
+
+    getData (){
+        axios.get('http://localhost:8081/user/get',{
         })
         .then((response)=>{
-           data = response.data;
-           console.log(data);
+           this.setState({
+            dataSource :response.data
+           })
+           //console.log(dataSource);
         })
         .catch((err)=>{
             console.log(err);
         });
-    
     }
+    
     render(){
         return(
             <div>
@@ -36,7 +48,7 @@ export default class User extends React.Component{
                         <Card title="表单" bordered={false}>
                             <Row>
                                 <Col span={24} >
-                                    <Table dataSource={data}>
+                                    <Table dataSource={this.state.dataSource} rowKey="ID">
                                         <Column
                                             title="用户名"
                                             dataIndex="username"
