@@ -1,8 +1,19 @@
 import React from 'react';
-import {Card, Form, Input, Button, Col, Row, Icon, DatePicker} from 'antd';
+import {Card, Form, Input, Button, Col, Row, Icon, DatePicker, message} from 'antd';
 import './index.less';
 import axios from 'axios';
 const FormItem = Form.Item;
+message.config({
+    top: 200,
+    duration: 5,
+    maxCount: 3,
+  });
+const success = ()=>{
+    message.success('恭喜你,成功注册为缪诗会员');
+}
+const fail = ()=>{
+    message.fail('很抱歉,注册失败！');
+}
 
 export default class Register extends React.Component{
     constructor(props)
@@ -11,7 +22,7 @@ export default class Register extends React.Component{
     }
     handleSubmit(e) {
         e.preventDefault();
-        axios.post('http://localhost:8081/user/post',{
+        axios.post('http://localhost:8081/user/posttemp',{
             username: document.getElementById('username').value,
             password: document.getElementById('password').value,
             mobile: document.getElementById('mobile').value,
@@ -20,7 +31,14 @@ export default class Register extends React.Component{
      
         })
         .then((response)=>{
-            console.log(response);
+            if(response.data == "OK")
+            {
+                success();
+            }
+            else
+            {
+                fail();
+            }
         })
         .catch((err)=>{
             console.log(err);

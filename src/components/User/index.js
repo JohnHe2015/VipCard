@@ -45,10 +45,10 @@ export default class User extends React.Component{
                 </Row>
                 <Row>
                     <Col span={24}>
-                        <Card title="表单" bordered={false}>
+                        <Card title="用户列表" bordered={false}>
                             <Row>
                                 <Col span={24} >
-                                    <Table dataSource={this.state.dataSource} rowKey="ID">
+                                    <Table dataSource={this.state.dataSource} rowKey="ID" bordered={true}>
                                         <Column
                                             title="用户名"
                                             dataIndex="username"

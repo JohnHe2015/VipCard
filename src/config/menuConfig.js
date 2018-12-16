@@ -11,6 +11,12 @@ const menuConfig = [
 
     },
     {
+        "title" : "会员审批",
+        "key" : "/admin/approval",
+        "Icon" : "setting"
+
+    },
+    {
         "title" : "会员管理",
         "key" : "/admin/manager",
         "Icon" : "setting"

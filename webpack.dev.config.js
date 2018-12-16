@@ -12,10 +12,10 @@ module.exports = {
             {
                 test : /\.(js|jsx)$/,
                 use : {
-                    loader : 'babel-loader'
+                    loader : 'babel-loader',
                     // query : {
-                    //     presets : ['react','env']
-                    // }
+                    //      presets : ['react','env']
+                    //  }
                 },
                 exclude : '/node_modules/'
             },
