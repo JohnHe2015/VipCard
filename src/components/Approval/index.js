@@ -15,7 +15,8 @@ export default class Approval extends React.Component{
             dataSource : [],
             ModalText : "Content of Modal",
             visible : false,
-            confirmLoading: false,  
+            confirmLoading: false,
+            value: []  
         }
     }
 
@@ -45,18 +46,30 @@ export default class Approval extends React.Component{
             dataIndex:"operation",
             key:"operation",
             render: (text, record,index) => (
-                console.log(`record : ${record}`),
                 <span>
                     {record.ID}
-                <Button type="primary" onClick={this.showModal} style={{marginRight:20}}>
+                <Button type="primary" onClick={this.showModal.bind(this,record)} style={{marginRight:20}}>
                     同意
                 </Button>
+                <Button onClick={this.showCancel.bind(this,(record.ID))}>
+                    不同意
+                </Button>
+                </span>
+            )
+        }
+    ]; 
+    
+    renderAction =(record) =>{
+        console.log(record);
+        return(
+            this.state.value.map((item,index)=>{
                 <Modal 
                     title="请输入消费金额和拍摄类型 :"
-                    visible={this.state.visible}
+                    visible={this.item.visible}
                     destroyOnClose={true}
+                    key={index}
                     //onOk={this.handleOk.bind(this,{ID:record.ID,mobile:record.mobile,sex:record.sex,birthday:record.birthday})}
-                    onOk={() => this.handleOk(record.ID)}
+                    onOk={() => this.handleOk(item.ID)}
                     confirmLoading={this.state.confirmLoading}
                     onCancel={this.handleCancel}>
                     <InputNumber  style={{marginLeft:100,width:130,marginBottom:10}} placeholder="请输入金额" id="amount" name="amount" defaultValue={0}
@@ -71,14 +84,9 @@ export default class Approval extends React.Component{
                         <Select.Option value="5">其它</Select.Option>
                     </Select>
                 </Modal>
-                <Button onClick={this.showCancel.bind(this,(record.ID))}>
-                    不同意
-                </Button>
-                </span>
-            )
-        }
-    ]; 
-    
+            })
+        );
+    }
 
     delData =(ID)=>{
         axios.post('http://localhost:8081/user/deltemp',{
@@ -107,10 +115,13 @@ export default class Approval extends React.Component{
       }
 
 
-    showModal=()=>{
+    showModal=(record)=>{
+        record.visible = true;
         this.setState({
-            visible: true,
+            visible: false,
         });
+        this.renderAction(record);
+
     }
 
     handleOk=(json)=>{
