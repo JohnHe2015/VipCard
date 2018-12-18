@@ -15,8 +15,7 @@ export default class Approval extends React.Component{
             dataSource : [],
             ModalText : "Content of Modal",
             visible : false,
-            confirmLoading: false,
-            value: []  
+            confirmLoading: false, 
         }
     }
 
@@ -47,10 +46,10 @@ export default class Approval extends React.Component{
             key:"operation",
             render: (text, record,index) => (
                 <span>
-                    {record.ID}
                 <Button type="primary" onClick={this.showModal.bind(this,record)} style={{marginRight:20}}>
                     同意
                 </Button>
+                {this.renderAction(record)}
                 <Button onClick={this.showCancel.bind(this,(record.ID))}>
                     不同意
                 </Button>
@@ -60,18 +59,16 @@ export default class Approval extends React.Component{
     ]; 
     
     renderAction =(record) =>{
-        console.log(record);
+        record.visible = record.visible == true ? true:false;
         return(
-            this.state.value.map((item,index)=>{
                 <Modal 
                     title="请输入消费金额和拍摄类型 :"
-                    visible={this.item.visible}
+                    visible={record.visible}
                     destroyOnClose={true}
-                    key={index}
-                    //onOk={this.handleOk.bind(this,{ID:record.ID,mobile:record.mobile,sex:record.sex,birthday:record.birthday})}
-                    onOk={() => this.handleOk(item.ID)}
+                    key={record.ID}
+                    onOk={() => this.handleOk(record)}
                     confirmLoading={this.state.confirmLoading}
-                    onCancel={this.handleCancel}>
+                    onCancel={()=>this.handleCancel(record)}>
                     <InputNumber  style={{marginLeft:100,width:130,marginBottom:10}} placeholder="请输入金额" id="amount" name="amount" defaultValue={0}
                     formatter={value => `¥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     parser={value => value.replace(/\¥\s?|(,*)/g, '')}/>
@@ -84,8 +81,7 @@ export default class Approval extends React.Component{
                         <Select.Option value="5">其它</Select.Option>
                     </Select>
                 </Modal>
-            })
-        );
+            ) 
     }
 
     delData =(ID)=>{
@@ -118,17 +114,15 @@ export default class Approval extends React.Component{
     showModal=(record)=>{
         record.visible = true;
         this.setState({
-            visible: false,
+            visible: true,
         });
-        this.renderAction(record);
-
     }
 
     handleOk=(json)=>{
         console.log("come in ");
         console.log(json);
-        // let amount = document.getElementById('amount').value;
-        // console.log(amount);
+        let amount = document.getElementById('amount').value;
+        console.log(amount);
  
         // setTimeout(() => {
         //   this.setState({
@@ -139,11 +133,11 @@ export default class Approval extends React.Component{
         
       }
     
-      handleCancel=()=>{
-        console.log('Clicked cancel button');
+      handleCancel=(record)=>{
+        record.visible = record.visible == true? false : true;
         this.setState({
-          visible: false,
-        });
+            visible : true
+        })
       }
 
     componentDidMount(){
@@ -157,7 +151,6 @@ export default class Approval extends React.Component{
            this.setState({
             dataSource :response.data
            })
-        //    console.log(dataSource);
         })
         .catch((err)=>{
             console.log(err);
