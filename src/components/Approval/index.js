@@ -195,8 +195,8 @@ export default class Approval extends React.Component{
             ID : data.ID,
             username : data.username,
             startTime : now,
-            endTime : now+(60*60*24*30),     //加上一个月的时间
-            isUse : 0,                       //0代表未使用
+            endTime : (now/1000+(60*60*24*30))*1000,     //加上一个月的时间
+            isUse : 0,                                  //0代表未使用
             useTime : "-",
             amount : data.amount
         })
