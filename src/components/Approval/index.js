@@ -1,9 +1,22 @@
 import React from 'react';
-import { Table, Row, Col, Card, Modal, Button, InputNumber, Input, Select} from 'antd';
+import { Table, Row, Col, Card, Modal, Button, InputNumber, Input, Select, message} from 'antd';
 import axios from 'axios';
+import Converter from './../../utils/converter';
 
 const { Column } = Table;
 const confirm = Modal.confirm;
+
+message.config({
+    top: 200,
+    duration: 3,
+    maxCount: 3,
+  });
+const success = ()=>{
+    message.success('审批通过，优惠券已发放');
+}
+const fail = ()=>{
+    message.fail('审批失败，请联系管理员！');
+}
 
 
 export default class Approval extends React.Component{
@@ -39,6 +52,11 @@ export default class Approval extends React.Component{
             title:"生日",
             dataIndex:"birthday",
             key:"birthday"
+        },
+        {
+            title:"申请时间",
+            dataIndex:"createTime",
+            key:"createTime"
         },
         {
             title:"操作",
@@ -118,18 +136,32 @@ export default class Approval extends React.Component{
         });
     }
 
-    handleOk=(json)=>{
+    handleOk=(data)=>{
         console.log("come in ");
-        console.log(json);
+        console.log(data);
         let amount = document.getElementById('amount').value;
-        console.log(amount);
- 
-        // setTimeout(() => {
-        //   this.setState({
-        //     visible: false,
-        //     confirmLoading: false,
-        //   });
-        // }, 1000);
+        amount = Converter.string2Amt(amount);
+        let level = amount <= 30000? 1 : 2;   //1普通会员  2Vip会员
+        axios.post('http://localhost:8081/user/post',{
+            ID : data.ID,
+            username : data.username,
+            password : data.password,
+            birthday : data.birthday,
+            sex : data.sex,
+            level : level,
+            mobile : data.mobile,
+        })
+        .then((response)=>{
+            if(response.data == "OK")
+            {
+                this.delData(data.ID);
+                success();
+            }
+        })
+        .catch((err)=>{
+            console.log(err);
+            fail();
+        });
         
       }
     

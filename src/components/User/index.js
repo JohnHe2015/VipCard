@@ -69,6 +69,16 @@ export default class User extends React.Component{
                                             dataIndex="birthday"
                                             key="birthday"
                                         />
+                                        <Column
+                                            title="会员等级"
+                                            dataIndex="level"
+                                            key="level"
+                                        />
+                                        <Column
+                                            title="注册日期"
+                                            dataIndex="createTime"
+                                            key="createTime"
+                                        />
 
                                     </Table>
                                 </Col>

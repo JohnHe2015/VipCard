@@ -9,7 +9,7 @@ message.config({
     maxCount: 3,
   });
 const success = ()=>{
-    message.success('恭喜你,成功注册为缪诗会员');
+    message.success('注册成功，请等待顾问审核');
 }
 const fail = ()=>{
     message.fail('很抱歉,注册失败！');
