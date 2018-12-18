@@ -4,6 +4,7 @@
  import Register from './src/components/Register';
  import User from './src/components/User';
  import Approval from './src/components/Approval';
+ import Coupon from './src/components/Coupon';
  import NoMatch from './src/components/Page404';
  import App from './App';
 
@@ -19,6 +20,7 @@
                                     <Route exact={true} path="/admin/register" component={Register} />
                                     <Route exact={true} path="/admin/manager" component={User} />
                                     <Route exact={true} path="/admin/approval" component={Approval} />
+                                    <Route exact={true} path="/admin/coupon" component={Coupon} />
                                     <Route component={NoMatch} />
                                 </Switch>
                             </Admin>

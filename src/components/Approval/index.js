@@ -11,11 +11,11 @@ message.config({
     duration: 3,
     maxCount: 3,
   });
-const success = ()=>{
-    message.success('审批通过，优惠券已发放');
+const success = (string)=>{
+    message.success(string);
 }
-const fail = ()=>{
-    message.fail('审批失败，请联系管理员！');
+const fail = (string)=>{
+    message.fail(string);
 }
 
 
@@ -137,11 +137,9 @@ export default class Approval extends React.Component{
     }
 
     handleOk=(data)=>{
-        console.log("come in ");
-        console.log(data);
         let amount = document.getElementById('amount').value;
         amount = Converter.string2Amt(amount);
-        let level = amount <= 30000? 1 : 2;   //1普通会员  2Vip会员
+        let level = amount < 30000? 1 : 2;   //1普通会员  2Vip会员
         axios.post('http://localhost:8081/user/post',{
             ID : data.ID,
             username : data.username,
@@ -154,13 +152,15 @@ export default class Approval extends React.Component{
         .then((response)=>{
             if(response.data == "OK")
             {
-                this.delData(data.ID);
-                success();
+                this.delData(data.ID);         
+                data.amount = amount;    //把消费金额传递给setCoupleData
+                this.setCoupleData(data);
+                success("恭喜您，用户已审核通过！");
             }
         })
         .catch((err)=>{
             console.log(err);
-            fail();
+            fail("审核失败！请联系管理员");
         });
         
       }
@@ -185,6 +185,29 @@ export default class Approval extends React.Component{
            })
         })
         .catch((err)=>{
+            console.log(err);
+        });
+    }
+
+    setCoupleData =(data)=>{
+        let now = Converter.getTime();
+        axios.post('http://localhost:8081/coupon/post',{
+            ID : data.ID,
+            username : data.username,
+            startTime : now,
+            endTime : now+(60*60*24*30),     //加上一个月的时间
+            isUse : 0,                       //0代表未使用
+            useTime : "-",
+            amount : data.amount
+        })
+        .then((response)=>{
+            if(response.data == "OK")
+            {
+                success("优惠券已发放到账户！");
+            }
+        })
+        .catch((err)=>{
+            fail("优惠券发放失败！请联系管理员");
             console.log(err);
         });
     }
