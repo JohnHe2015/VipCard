@@ -29,26 +29,21 @@ const menuConfig = [
 
     },
     {
-        "title" : "用户管理",
-        "key" : "/admin/user",
-        "Icon" : "user"
-    },
-    {
-        "title" : "antd测试",
-        "key" : "/admin/test",
-        "Icon" : "line-chart",
+        "title" : "微信管理",
+        "key" : "/admin/wx",
+        "Icon" : "wechat",
         "children" : [
             {
-                "title" : "按钮测试",
-                "key" : "/admin/test/button"
+                "title" : "分组管理",
+                "key" : "/admin/wx/groups"
             },
             {
-                "title" : "表单测试",
-                "key" : "/admin/test/form"
+                "title" : "模板查询",
+                "key" : "/admin/wx/template"
             },
             {
                 "title" : "model测试",
-                "key" : "/admin/test/model"
+                "key" : "/admin/wx/model"
             }
         ]
     }
