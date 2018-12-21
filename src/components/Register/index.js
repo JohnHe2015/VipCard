@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, Form, Input, Button, Col, Row, Icon, DatePicker, message} from 'antd';
+import {Card, Form, Input, Button, Col, Row, Icon, DatePicker, message, Spin} from 'antd';
 import './index.less';
 import axios from 'axios';
 const FormItem = Form.Item;
@@ -8,6 +8,8 @@ message.config({
     duration: 3,
     maxCount: 3,
   });
+
+const mySpin = <Icon type="sync" spin />
 const success = ()=>{
     message.success('注册成功，请等待顾问审核');
 }
@@ -19,10 +21,16 @@ export default class Register extends React.Component{
     constructor(props)
     {
         super(props);
+        this.state = {
+            loading : false
+        }
     }
-    handleSubmit(e) {
+    handleSubmit=(e)=> {
         e.preventDefault();
-        axios.post('http://localhost:8081/user/posttemp',{
+        this.setState({
+            loading : true
+        })
+        axios.post('http://67.218.137.208:8081/user/posttemp',{
             username: document.getElementById('username').value,
             password: document.getElementById('password').value,
             mobile: document.getElementById('mobile').value,
@@ -31,6 +39,9 @@ export default class Register extends React.Component{
      
         })
         .then((response)=>{
+            this.setState({
+                loading : false
+            })
             if(response.data == "OK")
             {
                 success();
@@ -60,6 +71,7 @@ export default class Register extends React.Component{
                         <Card title="表单" bordered={false}>
                             <Row>
                                 <Col span={6} offset={8}>
+                                <Spin tip="拼命注册中" indicator={mySpin} spinning={this.state.loading}>
                                     <Form layout="vertical" onSubmit={this.handleSubmit}>
                                         <FormItem >
                                             <Input prefix={<Icon type="user" />} placeholder="用户名" id="username" name="username" />
@@ -80,6 +92,7 @@ export default class Register extends React.Component{
                                             <Button htmlType="submit" type="primary" style={{marginLeft:"40%"}}>注册</Button>
                                         </FormItem>
                                     </Form>
+                                    </Spin>
                                 </Col>
                             </Row>
                                 

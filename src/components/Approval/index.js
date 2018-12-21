@@ -1,8 +1,9 @@
 import React from 'react';
-import { Table, Row, Col, Card, Modal, Button, InputNumber, Input, Select, message} from 'antd';
+import { Table, Row, Col, Card, Modal, Button, InputNumber, Spin, Select, message, Icon} from 'antd';
 import axios from 'axios';
 import Converter from './../../utils/converter';
 
+const mySpin = <Icon type="sync" spin />
 const { Column } = Table;
 const confirm = Modal.confirm;
 
@@ -29,6 +30,7 @@ export default class Approval extends React.Component{
             ModalText : "Content of Modal",
             visible : false,
             confirmLoading: false, 
+            loading : false,
         }
     }
 
@@ -103,7 +105,7 @@ export default class Approval extends React.Component{
     }
 
     delData =(ID)=>{
-        axios.post('http://localhost:8081/user/deltemp',{
+        axios.post('http://67.218.137.208:8081/user/deltemp',{
             ID : ID
         })
         .then((response)=>{
@@ -140,7 +142,7 @@ export default class Approval extends React.Component{
         let amount = document.getElementById('amount').value;
         amount = Converter.string2Amt(amount);
         let level = amount < 30000? 1 : 2;   //1普通会员  2Vip会员
-        axios.post('http://localhost:8081/user/post',{
+        axios.post('http://67.218.137.208:8081/user/post',{
             ID : data.ID,
             username : data.username,
             password : data.password,
@@ -177,11 +179,15 @@ export default class Approval extends React.Component{
     }
 
     getData =()=>{
-        axios.get('http://localhost:8081/user/gettemp',{
+        this.setState({
+            loading : true
+        })
+        axios.get('http://67.218.137.208:8081/user/gettemp',{
         })
         .then((response)=>{
            this.setState({
-            dataSource :response.data
+            dataSource :response.data,
+            loading : false
            })
         })
         .catch((err)=>{
@@ -191,7 +197,7 @@ export default class Approval extends React.Component{
 
     setCoupleData =(data)=>{
         let now = Converter.getTime();
-        axios.post('http://localhost:8081/coupon/post',{
+        axios.post('http://67.218.137.208:8081/coupon/post',{
             ID : data.ID,
             username : data.username,
             startTime : now,
@@ -228,8 +234,10 @@ export default class Approval extends React.Component{
                         <Card title="审核" bordered={false}>
                             <Row>
                                 <Col span={24} >
+                                <Spin tip="加载中" indicator={mySpin} spinning={this.state.loading}>
                                     <Table dataSource={this.state.dataSource} rowKey="ID" columns={this.columns} bordered={true}>
                                     </Table>
+                                </Spin>
                                 </Col>
                             </Row>   
                         </Card>
