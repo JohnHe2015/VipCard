@@ -17,7 +17,7 @@ const fail = ()=>{
     message.fail('很抱歉,注册失败！');
 }
 
-export default class Register extends React.Component{
+class Register extends React.Component{
     constructor(props)
     {
         super(props);
@@ -57,49 +57,55 @@ export default class Register extends React.Component{
       }
 
     render(){
+        const {getFieldDecorator} = this.props.form;
+        const formItemLayout = {
+            labelCol: {
+              xs: { span: 24 },
+              sm: { span: 4 },
+            },
+            wrapperCol: {
+              xs: { span: 24 },
+              sm: { span: 8 ,offset : 8},
+            },
+          };
         return(
-            <div>
-                <Row>
-                    <Col span={24}>
-                        <Card title="欢迎宝贝" bordered={false} style={{marginBottom:'30px',marginTop:'30px'}}>
-                            <p>基础表单的测试</p>
+            <div id="register-wrapper">
+                <Spin tip="拼命注册中" indicator={mySpin} spinning={this.state.loading}>
+                    <Row>
+                        <Card id="register-card" title="注册" bordered={false} style={{textAlign:"center"}}>
+                        <span className="register-span">MUSEE FOTO会员注册</span>
+                            <Form layout="vertical" onSubmit={this.handleSubmit}>
+                                <FormItem {...formItemLayout}>
+                                    {getFieldDecorator('userName', {
+                                        rules: [{ required: true, message: '请输入用户名!' }],
+                                    })(
+                                    <Input prefix={<Icon type="user" style={{color:"#655747"}} />} placeholder="用户名"  />
+                                    )}
+                                </FormItem>
+                                <FormItem {...formItemLayout}>
+                                    <Input prefix={<Icon type="phone" style={{color:"#655747"}} />} placeholder="电话" id="mobile" name="mobile" />
+                                </FormItem>
+                                <FormItem {...formItemLayout}>
+                                    <DatePicker placeholder="生日" style={{marginRight:"55%"}} />
+                                </FormItem>
+                                <FormItem {...formItemLayout}>
+                                    <Input prefix={<Icon type="heart" style={{color:"#655747"}} />} placeholder="性别" id="sex" name="sex" />
+                                </FormItem>
+                                <FormItem {...formItemLayout}>
+                                    <Input prefix={<Icon type="lock" style={{color:"#655747"}} />} placeholder="密码" id="password" name="password" type="password"/>
+                                </FormItem>
+                                <FormItem {...formItemLayout}>
+                                    <Button htmlType="submit" type="primary" >注册</Button>
+                                </FormItem>
+                            </Form>      
                         </Card>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span={24}>
-                        <Card title="表单" bordered={false}>
-                            <Row>
-                                <Col span={6} offset={8}>
-                                <Spin tip="拼命注册中" indicator={mySpin} spinning={this.state.loading}>
-                                    <Form layout="vertical" onSubmit={this.handleSubmit}>
-                                        <FormItem >
-                                            <Input prefix={<Icon type="user" />} placeholder="用户名" id="username" name="username" />
-                                        </FormItem>
-                                        <FormItem >
-                                            <Input prefix={<Icon type="phone" />} placeholder="电话" id="mobile" name="mobile" />
-                                        </FormItem>
-                                        <FormItem >
-                                            <DatePicker placeholder="生日" id="birthday" name="birthday" />
-                                        </FormItem>
-                                        <FormItem >
-                                            <Input prefix={<Icon type="heart" />} placeholder="性别" id="sex" name="sex" />
-                                        </FormItem>
-                                        <FormItem >
-                                            <Input prefix={<Icon type="lock" />} placeholder="密码" id="password" name="password" type="password"/>
-                                        </FormItem>
-                                        <FormItem >
-                                            <Button htmlType="submit" type="primary" style={{marginLeft:"40%"}}>注册</Button>
-                                        </FormItem>
-                                    </Form>
-                                    </Spin>
-                                </Col>
-                            </Row>
-                                
-                        </Card>
-                    </Col>
-                </Row>
+                    </Row>
+                </Spin>
             </div>
+ 
         )
     }
 }
+const MRegister = Form.create()(Register);
+
+export default MRegister;
