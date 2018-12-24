@@ -3,7 +3,7 @@ const myAxios = {
     get : (options)=>{
         return new Promise((resolve,reject)=>{
             axios({
-                //baseURL : 'http://67.218.137.208:8081/',
+                //baseURL : 'http://47.98.138.190:8081/',
                 baseURL : 'http://localhost:8081/',
                 url : options.url,
                 method : options.method || 'get',
@@ -25,7 +25,7 @@ const myAxios = {
     post : (options)=>{
         return new Promise((resolve,reject)=>{
             axios({
-                //baseURL : 'http://67.218.137.208:8081/',
+                //baseURL : 'http://47.98.138.190:8081/',
                 baseURL : 'http://localhost:8081/',
                 url : options.url,
                 method : options.method || 'post',
