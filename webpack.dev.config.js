@@ -41,7 +41,7 @@ module.exports = {
 
     devServer : {
         contentBase : path.resolve(__dirname, './build'),
-        port : 8888,
+        port : 80,
         // inline : true,
         // hot : true,
         compress : true
