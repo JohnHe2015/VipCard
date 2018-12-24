@@ -92,7 +92,7 @@ class Register extends React.Component{
                                     {getFieldDecorator('birthday',{
                                         rules: [{ required: true, message: '请输入生日!' }],
                                     })(
-                                        <DatePicker  placeholder="生日" style={{marginRight:"55%"}} />
+                                        <DatePicker format="YYYY-MM-DD" placeholder="生日" style={{marginRight:"55%"}} />
                                     )}
                                 </FormItem>
                                 <FormItem {...formItemLayout}>
