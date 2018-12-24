@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table, Row, Col, Card, Spin, Icon} from 'antd';
-import axios from 'axios';
+import axios from './../../axios/axios';
 
 const mySpin = <Icon type="sync" spin />
 const { Column } = Table;
@@ -23,18 +23,18 @@ export default class Coupon extends React.Component{
         this.setState({
             loading : true
         })
-        axios.get('http://67.218.137.208:8081/coupon/get',{
+        axios.get({
+            url : '/coupon/get',
         })
         .then((response)=>{
-           this.setState({
-            dataSource :response.data,
-            loading : false
-           })
-           //console.log(dataSource);
+            this.setState({
+                dataSource : response.data,
+                loading : false
+            })
         })
         .catch((err)=>{
-            console.log(err);
-        });
+            console.log(err)
+        })
     }
     
     render(){

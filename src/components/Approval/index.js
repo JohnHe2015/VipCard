@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Row, Col, Card, Modal, Button, InputNumber, Spin, Select, message, Icon} from 'antd';
-import axios from 'axios';
+//import axios from 'axios';
+import axios from './../../axios/axios';
 import Converter from './../../utils/converter';
 
 const mySpin = <Icon type="sync" spin />
@@ -105,8 +106,11 @@ export default class Approval extends React.Component{
     }
 
     delData =(ID)=>{
-        axios.post('http://67.218.137.208:8081/user/deltemp',{
-            ID : ID
+        axios.post({
+            url :'/user/deltemp',
+            data :{
+                ID : ID
+            }
         })
         .then((response)=>{
             if(response.data == "OK")
@@ -115,6 +119,7 @@ export default class Approval extends React.Component{
             }
         })
         .catch((err)=>{
+            message.fail(err);
             console.log(err);
         });
     }
@@ -142,14 +147,17 @@ export default class Approval extends React.Component{
         let amount = document.getElementById('amount').value;
         amount = Converter.string2Amt(amount);
         let level = amount < 30000? 1 : 2;   //1普通会员  2Vip会员
-        axios.post('http://67.218.137.208:8081/user/post',{
-            ID : data.ID,
-            username : data.username,
-            password : data.password,
-            birthday : data.birthday,
-            sex : data.sex,
-            level : level,
-            mobile : data.mobile,
+        axios.post({
+            url : '/user/post',
+            data : {
+                ID : data.ID,
+                username : data.username,
+                password : data.password,
+                birthday : data.birthday,
+                sex : data.sex,
+                level : level,
+                mobile : data.mobile,
+            }
         })
         .then((response)=>{
             if(response.data == "OK")
@@ -162,7 +170,7 @@ export default class Approval extends React.Component{
         })
         .catch((err)=>{
             console.log(err);
-            fail("审核失败！请联系管理员");
+            message.fail("审核失败！请联系管理员");
         });
         
       }
@@ -182,7 +190,8 @@ export default class Approval extends React.Component{
         this.setState({
             loading : true
         })
-        axios.get('http://67.218.137.208:8081/user/gettemp',{
+        axios.get({
+            url : '/user/gettemp'
         })
         .then((response)=>{
            this.setState({
@@ -197,14 +206,17 @@ export default class Approval extends React.Component{
 
     setCoupleData =(data)=>{
         let now = Converter.getTime();
-        axios.post('http://67.218.137.208:8081/coupon/post',{
-            ID : data.ID,
-            username : data.username,
-            startTime : now,
-            endTime : (now/1000+(60*60*24*30))*1000,     //加上一个月的时间
-            isUse : 0,                                  //0代表未使用
-            useTime : "-",
-            amount : data.amount
+        axios.post({
+            url : '/coupon/post',
+            data : {
+                ID : data.ID,
+                username : data.username,
+                startTime : now,
+                endTime : (now/1000+(60*60*24*30))*1000,     //加上一个月的时间
+                isUse : 0,                                  //0代表未使用
+                useTime : "-",
+                amount : data.amount
+            }
         })
         .then((response)=>{
             if(response.data == "OK")
@@ -213,7 +225,7 @@ export default class Approval extends React.Component{
             }
         })
         .catch((err)=>{
-            fail("优惠券发放失败！请联系管理员");
+            message.fail("优惠券发放失败！请联系管理员");
             console.log(err);
         });
     }

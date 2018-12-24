@@ -1,7 +1,7 @@
 import React from 'react';
 import {Card, Form, Input, Button, Col, Row, Icon, DatePicker, message, Spin} from 'antd';
 import './index.less';
-import axios from 'axios';
+import axios from './../../axios/axios';
 const FormItem = Form.Item;
 message.config({
     top: 200,
@@ -10,11 +10,11 @@ message.config({
   });
 
 const mySpin = <Icon type="sync" spin />
-const success = ()=>{
-    message.success('注册成功，请等待顾问审核');
+const success = (str)=>{
+    message.success(str);
 }
-const fail = ()=>{
-    message.fail('很抱歉,注册失败！');
+const fail = (str)=>{
+    message.fail(str);
 }
 
 class Register extends React.Component{
@@ -30,25 +30,23 @@ class Register extends React.Component{
         this.setState({
             loading : true
         })
-        axios.post('http://67.218.137.208:8081/user/posttemp',{
-            username: document.getElementById('username').value,
-            password: document.getElementById('password').value,
-            mobile: document.getElementById('mobile').value,
-            sex: document.getElementById('sex').value,
-            birthday: document.getElementById('birthday').children[0].children[0].value
-     
-        })
+        let values= this.props.form.getFieldsValue();
+        values.birthday = values.birthday.format('YYYY-MM-DD');  
+        axios.post({
+            url : '/user/posttemp',
+            data : values
+         })
         .then((response)=>{
             this.setState({
                 loading : false
             })
             if(response.data == "OK")
             {
-                success();
+                success('注册成功，请等待顾问审核');
             }
             else
             {
-                fail();
+                fail('注册失败！');
             }
         })
         .catch((err)=>{
@@ -58,6 +56,7 @@ class Register extends React.Component{
 
     render(){
         const {getFieldDecorator} = this.props.form;
+        //定义手机和电脑的适配,不考虑平板
         const formItemLayout = {
             labelCol: {
               xs: { span: 24 },
@@ -76,23 +75,39 @@ class Register extends React.Component{
                         <span className="register-span">MUSEE FOTO会员注册</span>
                             <Form layout="vertical" onSubmit={this.handleSubmit}>
                                 <FormItem {...formItemLayout}>
-                                    {getFieldDecorator('userName', {
+                                    {getFieldDecorator('username', {
                                         rules: [{ required: true, message: '请输入用户名!' }],
                                     })(
                                     <Input prefix={<Icon type="user" style={{color:"#655747"}} />} placeholder="用户名"  />
                                     )}
                                 </FormItem>
                                 <FormItem {...formItemLayout}>
-                                    <Input prefix={<Icon type="phone" style={{color:"#655747"}} />} placeholder="电话" id="mobile" name="mobile" />
+                                    {getFieldDecorator('mobile', {
+                                        rules: [{ required: true, message: '请输入手机号!' }],
+                                    })(
+                                    <Input prefix={<Icon type="phone" style={{color:"#655747"}} />} placeholder="电话"/>
+                                    )}
                                 </FormItem>
                                 <FormItem {...formItemLayout}>
-                                    <DatePicker placeholder="生日" style={{marginRight:"55%"}} />
+                                    {getFieldDecorator('birthday',{
+                                        rules: [{ required: true, message: '请输入生日!' }],
+                                    })(
+                                        <DatePicker  placeholder="生日" style={{marginRight:"55%"}} />
+                                    )}
                                 </FormItem>
                                 <FormItem {...formItemLayout}>
-                                    <Input prefix={<Icon type="heart" style={{color:"#655747"}} />} placeholder="性别" id="sex" name="sex" />
+                                    {getFieldDecorator('sex',{
+                                        rules: [{ required: true, message: '请输入性别!' }],
+                                    })(
+                                        <Input prefix={<Icon type="heart" style={{color:"#655747"}} />} placeholder="性别" />
+                                    )}
                                 </FormItem>
                                 <FormItem {...formItemLayout}>
-                                    <Input prefix={<Icon type="lock" style={{color:"#655747"}} />} placeholder="密码" id="password" name="password" type="password"/>
+                                    {getFieldDecorator('password',{
+                                        rules: [{ required: true, message: '请输入密码!' }],
+                                    })(
+                                        <Input prefix={<Icon type="lock" style={{color:"#655747"}} />} placeholder="密码" id="password" name="password" type="password"/>
+                                    )}
                                 </FormItem>
                                 <FormItem {...formItemLayout}>
                                     <Button htmlType="submit" type="primary" >注册</Button>
@@ -102,10 +117,7 @@ class Register extends React.Component{
                     </Row>
                 </Spin>
             </div>
- 
         )
     }
 }
-const MRegister = Form.create()(Register);
-
-export default MRegister;
+export default Form.create()(Register);
