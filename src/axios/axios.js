@@ -30,7 +30,7 @@ const myAxios = {
                 url : options.url,
                 method : options.method || 'post',
                 data : options.data || {},
-                timeout : 5000,
+                timeout : 8000,
             })
             .then((response)=>{
                 if(response.status =="200")
