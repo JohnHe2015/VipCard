@@ -5,7 +5,6 @@ import axios from './../../axios/axios';
 import Converter from './../../utils/converter';
 
 const mySpin = <Icon type="sync" spin />
-const { Column } = Table;
 const confirm = Modal.confirm;
 
 message.config({
@@ -16,8 +15,8 @@ message.config({
 const success = (string)=>{
     message.success(string);
 }
-const fail = (string)=>{
-    message.fail(string);
+const error = (string)=>{
+    message.error(string);
 }
 
 
@@ -119,7 +118,7 @@ export default class Approval extends React.Component{
             }
         })
         .catch((err)=>{
-            message.fail(err);
+            error(err);
             console.log(err);
         });
     }
@@ -170,7 +169,7 @@ export default class Approval extends React.Component{
         })
         .catch((err)=>{
             console.log(err);
-            message.fail("审核失败！请联系管理员");
+            error("审核失败！请联系管理员");
         });
         
       }
@@ -194,6 +193,7 @@ export default class Approval extends React.Component{
             url : '/user/gettemp'
         })
         .then((response)=>{
+            console.log(response);
            this.setState({
             dataSource :response.data,
             loading : false
@@ -201,6 +201,7 @@ export default class Approval extends React.Component{
         })
         .catch((err)=>{
             console.log(err);
+            error(err);
         });
     }
 
@@ -225,7 +226,7 @@ export default class Approval extends React.Component{
             }
         })
         .catch((err)=>{
-            message.fail("优惠券发放失败！请联系管理员");
+            error("优惠券发放失败！请联系管理员");
             console.log(err);
         });
     }

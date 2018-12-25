@@ -43,7 +43,6 @@ class Register extends React.Component{
                 data : values
              })
             .then((response)=>{
-                console.log(response);
                 this.setState({
                     loading : false
                 })
