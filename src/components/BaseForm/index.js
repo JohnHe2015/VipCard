@@ -3,13 +3,13 @@ import {Form, Button, Input, InputNumber, Select, DatePicker} from 'antd';
 import React from 'react';
 const FormItem = Form.Item;
 const Option = Select.Option;
-
 class BaseForm extends React.Component{
     constructor(props){
         super(props);
     }
 
     initFormItem=()=>{
+        console.log('fucking come in int');
         const {getFieldDecorator}=this.props.form;
         const formList = this.props.formList;     //获取子组件表单配置
         const formItemLayout = {                  //配置表单默认响应式布局 (Mobile || PC)
@@ -40,7 +40,7 @@ class BaseForm extends React.Component{
                     const input = 
                     <FormItem {...formItemLayout}>
                         {getFieldDecorator({fieldNmae}, {
-                            rules:{rules} 
+                            rules:rules 
                         })(
                         <Input prefix={prefix} placeholder={placeholder} />
                         )}
@@ -54,7 +54,7 @@ class BaseForm extends React.Component{
                     const select = 
                     <FormItem {...formItemLayout}>
                         {getFieldDecorator({fieldNmae}, {
-                            rules:{rules} 
+                            rules:rules 
                         })(
                         <Select placeholder={placeholder} style={{width:width}}>
                             {this.iterateSelect(optionList)}               
@@ -69,7 +69,7 @@ class BaseForm extends React.Component{
                     const date = 
                     <FormItem {...formItemLayout}>
                         {getFieldDecorator({fieldNmae}, {
-                            rules:{rules} 
+                            rules:rules 
                         })(
                         <DatePicker format="YYYY-MM-DD" placeholder={placeholder} style={{width:width}}>       
                         </DatePicker>
@@ -96,7 +96,7 @@ class BaseForm extends React.Component{
     render(){
         return(
             <Form>
-                {this.initFormItem}     {/*生成基础表单项*/}
+                {this.initFormItem()}     {/*生成基础表单项*/}
                 <Button type="primary" onClick={()=>{this.props.handleSubmit}}>   {/*处理事件应该放在父组件*/}
                     Ok
                 </Button>
