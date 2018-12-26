@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table, Row, Col, Card, Modal, Button, InputNumber, Spin, Select, message, Icon} from 'antd';
-//import axios from 'axios';
+import './index.less';
 import axios from './../../axios/axios';
 import Converter from './../../utils/converter';
 
@@ -65,15 +65,17 @@ export default class Approval extends React.Component{
             dataIndex:"operation",
             key:"operation",
             render: (text, record,index) => (
-                <span>
-                <Button type="primary" onClick={this.showModal.bind(this,record)} style={{marginRight:20}}>
-                    同意
-                </Button>
+                <div className="opera">
+                    <span onClick={this.showModal.bind(this,record)}>
+                        <Icon type='edit' />通过
+                    </span>
+                    <span> | </span>
+                    <span onClick={this.showCancel.bind(this,(record.ID))}>
+                        <Icon type='close-circle' />拒绝
+                    </span>
                 {this.renderAction(record)}
-                <Button onClick={this.showCancel.bind(this,(record.ID))}>
-                    不同意
-                </Button>
-                </span>
+                </div>
+                
             )
         }
     ]; 
@@ -89,7 +91,7 @@ export default class Approval extends React.Component{
                     onOk={() => this.handleOk(record)}
                     confirmLoading={this.state.confirmLoading}
                     onCancel={()=>this.handleCancel(record)}>
-                    <InputNumber  style={{marginLeft:100,width:130,marginBottom:10}} placeholder="请输入金额" id="amount" name="amount" defaultValue={0}
+                    <InputNumber style={{marginLeft:100,width:130,marginBottom:10}} placeholder="请输入金额" id="amount" name="amount" defaultValue={0}
                     formatter={value => `¥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     parser={value => value.replace(/\¥\s?|(,*)/g, '')}/>
                     <br />
@@ -248,7 +250,7 @@ export default class Approval extends React.Component{
                             <Row>
                                 <Col span={24} >
                                 <Spin tip="加载中" indicator={mySpin} spinning={this.state.loading}>
-                                    <Table dataSource={this.state.dataSource} rowKey="ID" columns={this.columns} bordered={true}>
+                                    <Table className="Approval-table" dataSource={this.state.dataSource} rowKey="ID" columns={this.columns} bordered={true}>
                                     </Table>
                                 </Spin>
                                 </Col>

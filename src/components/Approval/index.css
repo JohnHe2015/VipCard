@@ -1,0 +1,10 @@
+.Approval-table {
+  margin-top: 15px;
+}
+.Approval-table th,
+.Approval-table td {
+  text-align: center !important;
+}
+.Approval-table .opera span {
+  cursor: pointer;
+}
