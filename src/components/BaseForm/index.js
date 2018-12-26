@@ -107,3 +107,6 @@ class BaseForm extends React.Component{
         )
     }
 }
+
+
+export default Form.create()(BaseForm);
