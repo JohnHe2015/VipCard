@@ -25,9 +25,10 @@ export default class MRegister extends React.Component{
         }
     }
 
-    handleSubmit=(e)=> {
-        e.preventDefault();
-        this.props.form.validateFields({ force: true }, (err, values) => {
+    handleSubmit=(data)=> {
+        console.log('fuck');
+        //e.preventDefault();
+        data({ force: true }, (err, values) => {
             if(err)
             {
                 return;
@@ -35,8 +36,10 @@ export default class MRegister extends React.Component{
             this.setState({
                 loading : true
             })
+            
             // let values= this.props.form.getFieldsValue();
             values.birthday = values.birthday.format('YYYY-MM-DD');  
+            console.log(values);
             axios.post({
                 url : '/user/posttemp',
                 data : values
@@ -65,13 +68,42 @@ export default class MRegister extends React.Component{
       }
 
     render(){
-        const formList = [{ 
-            type: "input",
-            lable: "备注",
-            initialValue: "oncare",
-            placeholder: "请填写你的备注",
-            width: "200px",
-            field:"text",
+        const formList = [
+            { 
+                type: "input",
+                label: "备注",
+                initialValue: "初始值测试",
+                placeholder: "请填写你的备注",
+                // width: "200px",
+                fieldName:"username",
+            },
+            {
+                type: "select",
+                label: "下拉框",
+                fieldName:"test2",
+                placeholder:"请选择类型",
+                optionList : [
+                    {
+                        name : "1",
+                        value : "摄影券"
+                    },
+                    {
+                        name : "2",
+                        value : "咖啡券"
+                    }
+                ]
+            },
+            {
+                type:"date",
+                label:"生日",
+                fieldName:"birthday",
+                placeholder:"请选择日期"
+            },
+            {
+                type:"button",
+                btnValue:"提交",
+                btnType:"primary",
+                fieldName :"submit"
             }
         ]
 
