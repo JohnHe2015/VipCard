@@ -1,6 +1,11 @@
 import axios from 'axios';
 const myAxios = {
     get : (options)=>{
+        let loading;
+        if (options && options.isShowLoading !== false){
+            loading = document.getElementById('myLoading');
+            loading.style.display = 'block';
+        }
         return new Promise((resolve,reject)=>{
             axios({
                 //baseURL : 'http://47.98.138.190:8081/',
@@ -11,6 +16,10 @@ const myAxios = {
                 timeout : 5000,
             })
             .then((response)=>{
+                if (options && options.isShowLoading !== false) {
+                    loading = document.getElementById('myLoading');
+                    loading.style.display = 'none';
+                }
                 if(response.status =="200")
                 {
                     resolve(response);
@@ -23,6 +32,11 @@ const myAxios = {
     },
 
     post : (options)=>{
+        let loading;
+        if (options && options.isShowLoading !== false){
+            loading = document.getElementById('myLoading');
+            loading.style.display = 'block';
+        }
         return new Promise((resolve,reject)=>{
             axios({
                 //baseURL : 'http://47.98.138.190:8081/',
@@ -33,6 +47,10 @@ const myAxios = {
                 timeout : 8000,
             })
             .then((response)=>{
+                if (options && options.isShowLoading !== false) {
+                    loading = document.getElementById('myLoading');
+                    loading.style.display = 'none';
+                }
                 if(response.status =="200")
                 {
                     resolve(response);

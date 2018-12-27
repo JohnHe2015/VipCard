@@ -1,0 +1,13 @@
+//默认样式 包括loading等
+@import './loading.less';
+ul,li{
+    list-style: none;
+}
+.clearfix{
+    &::after{
+        content:' ';
+        clear:both;
+        display: block;
+        visibility: hidden;
+    }
+}

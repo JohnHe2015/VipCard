@@ -1,3 +1,4 @@
+//测试基础表单的组件
 import React from 'react';
 import './index.less';
 import axios from './../../axios/axios';
@@ -26,7 +27,6 @@ export default class MRegister extends React.Component{
     }
 
     handleSubmit=(data)=> {
-        console.log('fuck');
         //e.preventDefault();
         data({ force: true }, (err, values) => {
             if(err)
@@ -76,6 +76,11 @@ export default class MRegister extends React.Component{
                 placeholder: "请填写你的备注",
                 // width: "200px",
                 fieldName:"username",
+                rules : [
+                    { required: true, message: '请输入用户名!'},
+                    {pattern: new RegExp(/^[0-9a-zA-Z-_]+$/, "g"), message: '用户名只能为数字字母或下划线的组合！'},
+                    {max:14, min: 6, message:'用户名长度为6-14位'}
+                ]
             },
             {
                 type: "select",

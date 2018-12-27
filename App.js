@@ -1,4 +1,5 @@
 import React from 'react';
+import './src/style/common.less';    //全局引入默认样式
 
 
 

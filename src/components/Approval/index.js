@@ -4,7 +4,6 @@ import './index.less';
 import axios from './../../axios/axios';
 import Converter from './../../utils/converter';
 
-const mySpin = <Icon type="sync" spin />
 const confirm = Modal.confirm;
 
 message.config({
@@ -27,10 +26,7 @@ export default class Approval extends React.Component{
 
     this.state = {
             dataSource : [],
-            ModalText : "Content of Modal",
             visible : false,
-            confirmLoading: false, 
-            loading : false,
         }
     }
 
@@ -89,7 +85,6 @@ export default class Approval extends React.Component{
                     destroyOnClose={true}
                     key={record.ID}
                     onOk={() => this.handleOk(record)}
-                    confirmLoading={this.state.confirmLoading}
                     onCancel={()=>this.handleCancel(record)}>
                     <InputNumber style={{marginLeft:100,width:130,marginBottom:10}} placeholder="请输入金额" id="amount" name="amount" defaultValue={0}
                     formatter={value => `¥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
@@ -188,17 +183,12 @@ export default class Approval extends React.Component{
     }
 
     getData =()=>{
-        this.setState({
-            loading : true
-        })
         axios.get({
             url : '/user/gettemp'
         })
         .then((response)=>{
-            console.log(response);
            this.setState({
             dataSource :response.data,
-            loading : false
            })
         })
         .catch((err)=>{
@@ -249,10 +239,8 @@ export default class Approval extends React.Component{
                         <Card title="审核" bordered={false}>
                             <Row>
                                 <Col span={24} >
-                                <Spin tip="加载中" indicator={mySpin} spinning={this.state.loading}>
                                     <Table className="Approval-table" dataSource={this.state.dataSource} rowKey="ID" columns={this.columns} bordered={true}>
                                     </Table>
-                                </Spin>
                                 </Col>
                             </Row>   
                         </Card>

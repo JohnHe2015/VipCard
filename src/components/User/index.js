@@ -2,8 +2,6 @@ import React from 'react';
 import { Table, Row, Col, Card, Spin, Icon} from 'antd';
 import axios from './../../axios/axios';
 
-const mySpin = <Icon type="sync" spin />
-
 const { Column } = Table;
 
 export default class User extends React.Component{
@@ -11,7 +9,6 @@ export default class User extends React.Component{
         super(props);
         this.state = {
             dataSource : [],
-            loading: false,
         }
     }
 
@@ -20,16 +17,12 @@ export default class User extends React.Component{
     }
 
     getData (){
-        this.setState({
-            loading : true
-        })
         axios.get({
             url : '/user/get',
         })
         .then((response)=>{
             this.setState({
                 dataSource : response.data,
-                loading : false
             })
         })
         .catch((err)=>{
@@ -52,7 +45,6 @@ export default class User extends React.Component{
                         <Card title="用户列表" bordered={false}>
                             <Row>
                                 <Col span={24} >
-                                <Spin tip="加载中" indicator={mySpin} spinning={this.state.loading}>
                                     <Table dataSource={this.state.dataSource} rowKey="ID" bordered={true}>
                                         <Column
                                             title="用户名"
@@ -86,7 +78,6 @@ export default class User extends React.Component{
                                         />
 
                                     </Table>
-                                    </Spin>
                                 </Col>
                             </Row>   
                         </Card>
