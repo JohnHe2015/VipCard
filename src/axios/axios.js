@@ -2,7 +2,9 @@ import axios from 'axios';
 const myAxios = {
     get : (options)=>{
         let loading;
-        if (options && options.isShowLoading !== false){
+        console.log(options.isShowLoading);
+        if (options && options.isShowLoading){
+            console.log('come in ');
             loading = document.getElementById('myLoading');
             loading.style.display = 'block';
         }
@@ -33,7 +35,7 @@ const myAxios = {
 
     post : (options)=>{
         let loading;
-        if (options && options.isShowLoading !== false){
+        if (options && options.isShowLoading){
             loading = document.getElementById('myLoading');
             loading.style.display = 'block';
         }

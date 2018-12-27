@@ -112,6 +112,7 @@ export default class Approval extends React.Component{
             if(response.data == "OK")
             {
                 this.getData();
+                success('删除成功');
             }
         })
         .catch((err)=>{
@@ -153,7 +154,8 @@ export default class Approval extends React.Component{
                 sex : data.sex,
                 level : level,
                 mobile : data.mobile,
-            }
+            },
+            isShowLoading : true
         })
         .then((response)=>{
             if(response.data == "OK")
@@ -184,7 +186,8 @@ export default class Approval extends React.Component{
 
     getData =()=>{
         axios.get({
-            url : '/user/gettemp'
+            url : '/user/gettemp',
+            isShowLoading : true
         })
         .then((response)=>{
            this.setState({

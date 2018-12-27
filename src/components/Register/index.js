@@ -9,7 +9,6 @@ message.config({
     maxCount: 3,
   });
 
-const mySpin = <Icon type="sync" spin />
 const success = (str)=>{
     message.success(str);
 }
@@ -21,9 +20,6 @@ class Register extends React.Component{
     constructor(props)
     {
         super(props);
-        this.state = {
-            loading : false
-        }
     }
 
     handleSubmit=(e)=> {
@@ -33,19 +29,14 @@ class Register extends React.Component{
             {
                 return;
             }
-            this.setState({
-                loading : true
-            })
             // let values= this.props.form.getFieldsValue();
             values.birthday = values.birthday.format('YYYY-MM-DD');  
             axios.post({
                 url : '/user/posttemp',
-                data : values
+                data : values,
+                isShowLoading : true
              })
             .then((response)=>{
-                this.setState({
-                    loading : false
-                })
                 if(response.status == "200")
                 {
                     success('注册成功，请等待顾问审核');
@@ -56,9 +47,6 @@ class Register extends React.Component{
                 }
             })
             .catch((err)=>{
-                this.setState({
-                    loading : false
-                })
                 console.log(err);
                 error(`出错了 : ${err} !`);
             });
@@ -80,7 +68,6 @@ class Register extends React.Component{
           };
         return(
             <div id="register-wrapper">
-                <Spin tip="拼命注册中" indicator={mySpin} spinning={this.state.loading}>
                     <Row>
                         <Card id="register-card" title="注册" bordered={false} style={{textAlign:"center"}}>
                         <span className="register-span">MUSEE FOTO会员注册</span>
@@ -135,7 +122,6 @@ class Register extends React.Component{
                             </Form>      
                         </Card>
                     </Row>
-                </Spin>
             </div>
         )
     }

@@ -20,6 +20,7 @@ export default class Coupon extends React.Component{
     getData =()=>{
         axios.get({
             url : '/coupon/get',
+            isShowLoading : true
         })
         .then((response)=>{
             this.setState({

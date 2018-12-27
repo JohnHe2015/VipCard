@@ -19,6 +19,7 @@ export default class User extends React.Component{
     getData (){
         axios.get({
             url : '/user/get',
+            isShowLoading : true
         })
         .then((response)=>{
             this.setState({
