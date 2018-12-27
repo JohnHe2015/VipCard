@@ -2,9 +2,7 @@ import axios from 'axios';
 const myAxios = {
     get : (options)=>{
         let loading;
-        console.log(options.isShowLoading);
         if (options && options.isShowLoading){
-            console.log('come in ');
             loading = document.getElementById('myLoading');
             loading.style.display = 'block';
         }

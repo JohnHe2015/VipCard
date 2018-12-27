@@ -112,7 +112,6 @@ export default class Approval extends React.Component{
             if(response.data == "OK")
             {
                 this.getData();
-                success('删除成功');
             }
         })
         .catch((err)=>{
@@ -242,7 +241,7 @@ export default class Approval extends React.Component{
                         <Card title="审核" bordered={false}>
                             <Row>
                                 <Col span={24} >
-                                    <Table className="Approval-table" dataSource={this.state.dataSource} rowKey="ID" columns={this.columns} bordered={true}>
+                                    <Table locale={{emptyText:'宝贝,没数据哦'}} className="Approval-table" dataSource={this.state.dataSource} rowKey="ID" columns={this.columns} bordered={true}>
                                     </Table>
                                 </Col>
                             </Row>   
