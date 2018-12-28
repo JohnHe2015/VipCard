@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {message}  from 'antd';
 const myAxios = {
     get : (options)=>{
         let loading = document.getElementById('myLoading');
@@ -18,9 +19,13 @@ const myAxios = {
                 if (options && options.isShowLoading !== false) {
                     loading.style.display = 'none';
                 }
-                if(response.status =="200")
+                if(response.status =="200" && response.data.errcode == "0" )
                 {
-                    resolve(response);
+                    resolve(response.data.result);
+                }
+                if(response.data.errcode == "400")
+                {
+                    message.error(response.data.errmsg);
                 }
             })
             .catch((error)=>{
@@ -48,9 +53,14 @@ const myAxios = {
                 if (options && options.isShowLoading !== false) {
                     loading.style.display = 'none';
                 }
-                if(response.status =="200")
+                console.log(response);
+                if(response.status =="200" && response.data.errcode == "0")
                 {
-                    resolve(response);
+                    resolve(response.data.errmsg);
+                }
+                if(response.data.errcode == "400")
+                {
+                    message.error(response.data.errmsg);
                 }
             })
             .catch((error)=>{
