@@ -37,14 +37,7 @@ class Register extends React.Component{
                 // isShowLoading : true
              })
             .then((response)=>{
-                if(response.status == "200")
-                {
-                    success('注册成功，请等待顾问审核');
-                }
-                else
-                {
-                    error(response.data);
-                }
+                success(response);
             })
             .catch((err)=>{
                 console.log(err);
