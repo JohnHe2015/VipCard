@@ -72,7 +72,11 @@ export default class User extends React.Component{
                             bordered={false}>
                             <Row>
                                 <Col span={24} >
-                                    <Table dataSource={this.state.dataSource} rowKey="id" bordered={true} >
+                                    <Table dataSource={this.state.dataSource} rowKey="id" bordered={true} 
+                                        pagination={{
+                                            pageSize : 8
+                                        }}
+                                    >
                                         <Column
                                             title="用户名"
                                             dataIndex="username"

@@ -66,7 +66,7 @@ export default class Approval extends React.Component{
                         <Icon type='edit' />通过
                     </span>
                     <span> | </span>
-                    <span onClick={this.showCancel.bind(this,(record.ID))}>
+                    <span onClick={this.showCancel.bind(this,(record.id))}>
                         <Icon type='close-circle' />拒绝
                     </span>
                 {this.renderAction(record)}
@@ -83,7 +83,7 @@ export default class Approval extends React.Component{
                     title="请输入消费金额和拍摄类型 :"
                     visible={record.visible}
                     destroyOnClose={true}
-                    key={record.ID}
+                    key={record.id}
                     onOk={() => this.handleOk(record)}
                     onCancel={()=>this.handleCancel(record)}>
                     <InputNumber style={{marginLeft:100,width:130,marginBottom:10}} placeholder="请输入金额" id="amount" name="amount" defaultValue={0}
@@ -105,14 +105,11 @@ export default class Approval extends React.Component{
         axios.post({
             url :'/user/deltemp',
             data :{
-                ID : ID
+                id : ID
             }
         })
         .then((response)=>{
-            if(response.data == "OK")
-            {
-                this.getData();
-            }
+            this.getData();
         })
         .catch((err)=>{
             error(err);
@@ -146,7 +143,7 @@ export default class Approval extends React.Component{
         axios.post({
             url : '/user/post',
             data : {
-                ID : data.ID,
+                ID : data.id,
                 username : data.username,
                 password : data.password,
                 birthday : data.birthday,
@@ -157,13 +154,11 @@ export default class Approval extends React.Component{
             isShowLoading : true
         })
         .then((response)=>{
-            if(response.data == "OK")
-            {
-                this.delData(data.ID);         
-                data.amount = amount;    //把消费金额传递给setCoupleData
-                this.setCoupleData(data);
-                success("恭喜您，用户已审核通过！");
-            }
+            this.delData(data.ID);         
+            data.amount = amount;    //把消费金额传递给setCoupleData
+            this.setCoupleData(data);
+            success(response.errmsg);
+            
         })
         .catch((err)=>{
             console.log(err);
@@ -190,7 +185,7 @@ export default class Approval extends React.Component{
         })
         .then((response)=>{
            this.setState({
-            dataSource :response.data,
+            dataSource :response
            })
         })
         .catch((err)=>{
@@ -241,7 +236,7 @@ export default class Approval extends React.Component{
                         <Card title="审核" bordered={false}>
                             <Row>
                                 <Col span={24} >
-                                    <Table locale={{emptyText:'宝贝,没数据哦'}} className="Approval-table" dataSource={this.state.dataSource} rowKey="ID" columns={this.columns} bordered={true}>
+                                    <Table locale={{emptyText:'宝贝,没数据哦'}} className="Approval-table" dataSource={this.state.dataSource} rowKey="id" columns={this.columns} bordered={true}>
                                     </Table>
                                 </Col>
                             </Row>   
