@@ -1,9 +1,8 @@
 import axios from 'axios';
 const myAxios = {
     get : (options)=>{
-        let loading;
+        let loading = document.getElementById('myLoading');
         if (options && options.isShowLoading){
-            loading = document.getElementById('myLoading');
             loading.style.display = 'block';
         }
         return new Promise((resolve,reject)=>{
@@ -17,7 +16,6 @@ const myAxios = {
             })
             .then((response)=>{
                 if (options && options.isShowLoading !== false) {
-                    loading = document.getElementById('myLoading');
                     loading.style.display = 'none';
                 }
                 if(response.status =="200")
@@ -26,15 +24,15 @@ const myAxios = {
                 }
             })
             .catch((error)=>{
+                loading.style.display = 'none';
                 reject(error);
             })
         })
     },
 
     post : (options)=>{
-        let loading;
+        let loading = document.getElementById('myLoading');
         if (options && options.isShowLoading){
-            loading = document.getElementById('myLoading');
             loading.style.display = 'block';
         }
         return new Promise((resolve,reject)=>{
@@ -48,7 +46,6 @@ const myAxios = {
             })
             .then((response)=>{
                 if (options && options.isShowLoading !== false) {
-                    loading = document.getElementById('myLoading');
                     loading.style.display = 'none';
                 }
                 if(response.status =="200")
@@ -57,6 +54,7 @@ const myAxios = {
                 }
             })
             .catch((error)=>{
+                loading.style.display = 'none';
                 reject(error);
             })
         })

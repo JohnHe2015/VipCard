@@ -34,7 +34,7 @@ class Register extends React.Component{
             axios.post({
                 url : '/user/posttemp',
                 data : values,
-                isShowLoading : true
+                // isShowLoading : true
              })
             .then((response)=>{
                 if(response.status == "200")
