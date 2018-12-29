@@ -45,6 +45,10 @@ module.exports = {
         disableHostCheck: true,
         // inline : true,
         // hot : true,
-        compress : true
+        compress : true,
+        proxy: [{
+            context: ["/user", "/wx","/coupon"],
+            target: "http://localhost:8081",
+        }]
     }
 }
