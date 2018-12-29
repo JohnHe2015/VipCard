@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Row, Col, Card, Input, Select, DatePicker, Icon, Button, Tooltip, Form} from 'antd';
 import axios from './../../axios/axios';
+import converter from './../../utils/converter'
 const FormItem = Form.Item;
 const { Column } = Table;
 import moment from 'moment';
@@ -98,6 +99,14 @@ export default class User extends React.Component{
                                             // showSizeChanger :true,
                                             total :this.state.count,
                                             onChange : this.changePage
+                                        }}
+                                        onRow={(record)=>{
+                                            record.sex == "1" ? record.sex="男" : record.sex="女"
+                                            record.level == "1" ? record.level="Musee会员" : record.level="Vip会员"
+                                            record.createTime = converter.getFullDate(record.createTime)
+                                            return {
+                                                //onClick: () => {console.log(record)},   //此处添加事件
+                                            };
                                         }}
                                     >
                                         <Column

@@ -8,6 +8,10 @@ const converter = {
     },
     getFullDate : function(date)
     {
+        if(typeof date === "string")
+        {
+            date = parseInt(date);
+        }
         var date = new Date(date);//如果date为13位不需要乘1000
         var Y = date.getFullYear() + '-';
         var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
@@ -19,6 +23,10 @@ const converter = {
     },
     getDate : function(date)
     {
+        if(typeof date === "string")
+        {
+            date = parseInt(date);
+        }
         var date = new Date(date);//如果date为13位不需要乘1000
         var Y = date.getFullYear() + '-';
         var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
