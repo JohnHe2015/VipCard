@@ -101,11 +101,11 @@ export default class Approval extends React.Component{
             ) 
     }
 
-    delData =(ID)=>{
+    delData =(id)=>{
         axios.post({
             url :'/user/deltemp',
             data :{
-                id : ID
+                id : id
             }
         })
         .then((response)=>{
@@ -117,12 +117,12 @@ export default class Approval extends React.Component{
         });
     }
 
-    showCancel= (ID)=> {
+    showCancel= (id)=> {
         confirm({
           title: '审批?',
           content: 'Hi，确定要不通过吗？',
           onOk : ()=>{
-            this.delData(ID);
+            this.delData(id);
           },
           onCancel: ()=> {},
         });
@@ -143,7 +143,7 @@ export default class Approval extends React.Component{
         axios.post({
             url : '/user/post',
             data : {
-                ID : data.id,
+                id : data.id,
                 username : data.username,
                 password : data.password,
                 birthday : data.birthday,
@@ -154,10 +154,10 @@ export default class Approval extends React.Component{
             isShowLoading : true
         })
         .then((response)=>{
-            this.delData(data.ID);         
+            this.delData(data.id);         
             data.amount = amount;    //把消费金额传递给setCoupleData
             this.setCoupleData(data);
-            success(response.errmsg);
+            success(response);
             
         })
         .catch((err)=>{
@@ -199,7 +199,7 @@ export default class Approval extends React.Component{
         axios.post({
             url : '/coupon/post',
             data : {
-                ID : data.ID,
+                id : data.id,
                 username : data.username,
                 startTime : now,
                 endTime : (now/1000+(60*60*24*30))*1000,     //加上一个月的时间
@@ -209,10 +209,7 @@ export default class Approval extends React.Component{
             }
         })
         .then((response)=>{
-            if(response.data == "OK")
-            {
-                success("优惠券已发放到账户！");
-            }
+            success(response);
         })
         .catch((err)=>{
             error("优惠券发放失败！请联系管理员");
