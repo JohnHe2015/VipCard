@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Row, Col, Card, Spin, Icon} from 'antd';
+import { Table, Row, Col, Card, message} from 'antd';
 import axios from './../../axios/axios';
 
 const { Column } = Table;
@@ -28,6 +28,7 @@ export default class Coupon extends React.Component{
             })
         })
         .catch((err)=>{
+            message.error(err.toString());
             console.log(err)
         })
     }

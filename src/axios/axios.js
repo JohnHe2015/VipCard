@@ -21,7 +21,7 @@ const myAxios = {
                 }
                 if(response.status =="200" && response.data.errcode == "0" )
                 {
-                    resolve(response.data.result);
+                    resolve(response.data);
                 }
                 if(response.data.errcode == "400")
                 {

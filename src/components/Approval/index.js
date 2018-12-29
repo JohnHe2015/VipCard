@@ -185,7 +185,7 @@ export default class Approval extends React.Component{
         })
         .then((response)=>{
            this.setState({
-            dataSource :response
+            dataSource :response.result
            })
         })
         .catch((err)=>{

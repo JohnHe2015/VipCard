@@ -1,15 +1,16 @@
 import React from 'react';
-import { Table, Row, Col, Card, Input, Select, DatePicker, Icon, Button, Tooltip} from 'antd';
+import { Table, Row, Col, Card, Input, Select, DatePicker, Icon, Button, Tooltip, Form} from 'antd';
 import axios from './../../axios/axios';
-
+const FormItem = Form.Item;
 const { Column } = Table;
-const Search = Input.Search;
 
 export default class User extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             dataSource : [],
+            page : 1,        //分页计算后台node处理
+            pageSize: 8,    //一页显示条数
         }
     }
 
@@ -18,18 +19,37 @@ export default class User extends React.Component{
     }
 
     getData (){
+        let formData = this.formRef.getItemsValue();  //获取子Form的数据
+        // this.props.getFormRef(this.formRef.getItemsValue());
+        console.log(formData.birthday.format('YYYY-MM-DD')); 
         axios.get({
             url : '/user/get',
-            isShowLoading : true
+            isShowLoading : true,
+            params : {
+                page : this.state.page,
+                pageSize : this.state.pageSize,
+                username : formData.username || null,
+                mobile : formData.mobile || null,
+                sex : formData.sex || null,
+                level : formData.level || null,
+                birthday : formData.birthday.format('YYYY-MM-DD') || null
+            }
         })
         .then((response)=>{
             this.setState({
-                dataSource : response,
+                dataSource : response.result,
+                count : response.count
             })
         })
         .catch((err)=>{
             console.log(err);
         })
+    }
+
+    changePage = (page,pageSize)=>{
+        this.state.page = page;
+        this.state.pageSize = pageSize;
+        this.getData();
     }
     
     render(){
@@ -45,24 +65,12 @@ export default class User extends React.Component{
                 <Row>
                     <Col span={24}>
                         <Card title={
-                            <span>
-                                <Input prefix={<Icon type="user" style={{color:"#655747"}} />} placeholder="输入用户名" style={{width:130,marginRight:20}} />
-                                <Input prefix={<Icon type="phone" style={{color:"#655747"}} />} placeholder="请输入手机号" style={{width:180,marginRight:20}} />
-                                <Select placeholder="请选择性别" style={{width:120,marginRight:20}}>
-                                    <Select.Option value="1">男</Select.Option>
-                                    <Select.Option value="2">女</Select.Option>
-                                </Select>
-                                <Select placeholder="会员等级" style={{width:130,marginRight:20}}>
-                                    <Select.Option value="1">Musee会员</Select.Option>
-                                    <Select.Option value="2">Vip会员</Select.Option>
-                                </Select>
-                                <DatePicker format="YYYY-MM-DD" placeholder="选择生日" style={{marginRight:20}} />
-                            </span>
+                            <UserForm wrappedComponentRef={(form) => this.formRef = form} />
                             }
                             extra={
                                 <span>
                                     <Tooltip placement="top" title="查询">
-                                        <Button type="primary" shape="circle" icon="search" style={{marginRight:20}} />
+                                        <Button onClick={()=>this.getData()} type="primary" shape="circle" icon="search" style={{marginRight:20}} />
                                     </Tooltip>
                                     <Tooltip placement="top" title="重置">
                                         <Button type="primary" shape="circle" icon="reload" />
@@ -74,7 +82,12 @@ export default class User extends React.Component{
                                 <Col span={24} >
                                     <Table dataSource={this.state.dataSource} rowKey="id" bordered={true} 
                                         pagination={{
-                                            pageSize : 8
+                                            pageSize : this.state.pageSize,
+                                            current : this.state.page,
+                                            // pageSizeOptions : ['5','10','15','20'],
+                                            // showSizeChanger :true,
+                                            total :this.state.count,
+                                            onChange : this.changePage
                                         }}
                                     >
                                         <Column
@@ -119,3 +132,64 @@ export default class User extends React.Component{
         ); 
     }
 }
+
+
+class UserForm extends React.Component{
+    constructor(props){
+        super(props);
+    }
+    getItemsValue = ()=>{    
+        const valus= this.props.form.getFieldsValue();
+        return valus;
+    }
+
+    render(){
+        const {getFieldDecorator} = this.props.form;
+        return(
+            <Form layout="inline">
+                <FormItem>
+                    {getFieldDecorator('username', {
+                    
+                    })(
+                    <Input prefix={<Icon type="user" style={{color:"#655747"}} />} placeholder="输入用户名" style={{width:130,marginRight:20}} />
+                    )}
+                </FormItem>
+                <FormItem>
+                    {getFieldDecorator('mobile', {
+                        
+                    })(
+                        <Input prefix={<Icon type="phone" style={{color:"#655747"}} />} placeholder="请输入手机号" style={{width:180,marginRight:20}} />
+                    )}        
+                </FormItem>
+                <FormItem>
+                    {getFieldDecorator('sex', {
+                        
+                    })(
+                        <Select placeholder="请选择性别" style={{width:120,marginRight:20}}>
+                            <Select.Option value="1">男</Select.Option>
+                            <Select.Option value="2">女</Select.Option>
+                        </Select>
+                    )}        
+                </FormItem>
+                <FormItem>
+                    {getFieldDecorator('level', {
+                        
+                    })(
+                        <Select placeholder="会员等级" style={{width:130,marginRight:20}}>
+                            <Select.Option value="1">Musee会员</Select.Option>
+                            <Select.Option value="2">Vip会员</Select.Option>
+                        </Select>
+                    )}        
+                </FormItem>
+                <FormItem>
+                    {getFieldDecorator('birthday', {
+                        
+                    })(
+                        <DatePicker allowClear={false} format="YYYY-MM-DD" placeholder="选择生日" style={{marginRight:20}} />
+                    )}          
+                </FormItem>              
+            </Form>
+        )
+    }
+}
+UserForm = Form.create({})(UserForm);
