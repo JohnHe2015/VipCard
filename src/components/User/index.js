@@ -3,6 +3,7 @@ import { Table, Row, Col, Card, Input, Select, DatePicker, Icon, Button, Tooltip
 import axios from './../../axios/axios';
 const FormItem = Form.Item;
 const { Column } = Table;
+import moment from 'moment';
 
 export default class User extends React.Component{
     constructor(props){
@@ -20,8 +21,12 @@ export default class User extends React.Component{
 
     getData (){
         let formData = this.formRef.getItemsValue();  //获取子Form的数据
+        let birthday;
         // this.props.getFormRef(this.formRef.getItemsValue());
-        console.log(formData.birthday.format('YYYY-MM-DD')); 
+        if(formData.birthday)
+        {
+            birthday = moment(formData.birthday).format('YYYY-MM-DD');
+        }
         axios.get({
             url : '/user/get',
             isShowLoading : true,
@@ -32,7 +37,7 @@ export default class User extends React.Component{
                 mobile : formData.mobile || null,
                 sex : formData.sex || null,
                 level : formData.level || null,
-                birthday : formData.birthday.format('YYYY-MM-DD') || null
+                birthday : birthday || null
             }
         })
         .then((response)=>{
@@ -50,6 +55,11 @@ export default class User extends React.Component{
         this.state.page = page;
         this.state.pageSize = pageSize;
         this.getData();
+    }
+
+    resetFields =()=>{
+        this.formRef.resetForm();   //调用子Form实例的resetForm方法清空表单
+        this.getData();    
     }
     
     render(){
@@ -73,7 +83,7 @@ export default class User extends React.Component{
                                         <Button onClick={()=>this.getData()} type="primary" shape="circle" icon="search" style={{marginRight:20}} />
                                     </Tooltip>
                                     <Tooltip placement="top" title="重置">
-                                        <Button type="primary" shape="circle" icon="reload" />
+                                        <Button onClick={()=>this.resetFields()} type="primary" shape="circle" icon="reload" />
                                     </Tooltip>
                                 </span>
                             } 
@@ -139,8 +149,12 @@ class UserForm extends React.Component{
         super(props);
     }
     getItemsValue = ()=>{    
-        const valus= this.props.form.getFieldsValue();
-        return valus;
+        const values= this.props.form.getFieldsValue();
+        return values;
+    }
+    resetForm = ()=>{
+        const values = this.props.form.resetFields();
+        return values;
     }
 
     render(){
@@ -185,7 +199,7 @@ class UserForm extends React.Component{
                     {getFieldDecorator('birthday', {
                         
                     })(
-                        <DatePicker allowClear={false} format="YYYY-MM-DD" placeholder="选择生日" style={{marginRight:20}} />
+                        <DatePicker format="YYYY-MM-DD" allowClear={false} placeholder="选择生日" style={{marginRight:20}} />
                     )}          
                 </FormItem>              
             </Form>
