@@ -98,8 +98,8 @@ class Register extends React.Component{
                                         ],
                                     })(
                                         <Select placeholder="请选择性别" >
-                                            <Select.Option value="1">男</Select.Option>
-                                            <Select.Option value="2">女</Select.Option>
+                                            <Select.Option value={1}>男</Select.Option>
+                                            <Select.Option value={2}>女</Select.Option>
                                         </Select>
                                         // <Input prefix={<Icon type="heart" style={{color:"#655747"}} />} placeholder="性别" />
                                     )}

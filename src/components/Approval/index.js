@@ -91,11 +91,11 @@ export default class Approval extends React.Component{
                     parser={value => value.replace(/\¥\s?|(,*)/g, '')}/>
                     <br />
                     <Select placeholder="请选择类型" style={{width:130,marginLeft:100}}>
-                        <Select.Option value="1">全家福</Select.Option>
-                        <Select.Option value="2">婚纱</Select.Option>
-                        <Select.Option value="3">企业</Select.Option>
-                        <Select.Option value="4">个人</Select.Option>
-                        <Select.Option value="5">其它</Select.Option>
+                        <Select.Option value={1}>全家福</Select.Option>
+                        <Select.Option value={2}>婚纱</Select.Option>
+                        <Select.Option value={3}>企业</Select.Option>
+                        <Select.Option value={4}>个人</Select.Option>
+                        <Select.Option value={5}>其它</Select.Option>
                     </Select>
                 </Modal>
             ) 
