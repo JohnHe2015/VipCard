@@ -48,7 +48,7 @@ module.exports = {
         compress : true,
         proxy: [{
             context: ["/user", "/wx","/coupon"],
-            target: "http://localhost:8081",
+            target: "http://api.zhengshuqian.com",
         }]
     }
 }
