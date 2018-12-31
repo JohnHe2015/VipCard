@@ -154,6 +154,7 @@ export default class Approval extends React.Component{
             isShowLoading : true
         })
         .then((response)=>{
+            this.sendText(data.id);
             this.delData(data.id);         
             data.amount = amount;    //把消费金额传递给setCoupleData
             this.setCoupleData(data);
@@ -214,6 +215,22 @@ export default class Approval extends React.Component{
         .catch((err)=>{
             error("优惠券发放失败！请联系管理员");
             console.log(err);
+        });
+    }
+
+    sendText =(id)=>{      //给微信发送审核通过的消息
+        axios.get({
+            url : '/wx/sendText',
+            params : {
+                id : id
+            }
+        })
+        .then((response)=>{
+           console.log('发送微信消息成功啦');
+        })
+        .catch((err)=>{
+            console.log(err);
+            error(err);
         });
     }
 
