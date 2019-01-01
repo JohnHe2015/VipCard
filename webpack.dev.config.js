@@ -41,14 +41,14 @@ module.exports = {
 
     devServer : {
         contentBase : path.resolve(__dirname, './build'),
-        port : 9000,
+        port : 8080,
         disableHostCheck: true,
         // inline : true,
         // hot : true,
         compress : true,
-        proxy: [{
-            context: ["/user", "/wx","/coupon"],
-            target: "http://api.zhengshuqian.com",
-        }]
+        // proxy: [{
+        //     context: ["/user", "/wx","/coupon"],
+        //     target: "http://api.zhengshuqian.com",
+        // }]
     }
 }

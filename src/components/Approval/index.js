@@ -154,10 +154,10 @@ export default class Approval extends React.Component{
             isShowLoading : true
         })
         .then((response)=>{
-            this.sendText(data.id);
             this.delData(data.id);         
             data.amount = amount;    //把消费金额传递给setCoupleData
             this.setCoupleData(data);
+            this.sendTemplate(data.id,level);  //最后给微信发送模版消息
             success(response);
             
         })
@@ -218,11 +218,32 @@ export default class Approval extends React.Component{
         });
     }
 
-    sendText =(id)=>{      //给微信发送审核通过的消息
+    sendTemplate =(id,level)=>{      //给微信发送优惠券消息
+        console.log(`level is  ${level}`); 
+        let type1="咖啡券",type2="拍摄券",type3="摄影券",type1Sum,type2Sum,type3Sum;
+        if(level == 1){
+            type1Sum = 2;
+            type2Sum = 0;
+            type3Sum = 0;
+        }
+        else
+        {
+            type1Sum = 6;
+            type2Sum = 1;
+            type3Sum = 2;
+        }
+        console.log(`typeSum : ${type3Sum}`);
         axios.get({
-            url : '/wx/sendText',
+            url : '/wx/sendTemplate',
             params : {
-                id : id
+                id : id,
+                level : level,
+                type1 : type1,
+                type2 : type2,
+                type3 : type3,
+                type1Sum : type1Sum,
+                type2Sum : type2Sum,
+                type3Sum : type3Sum,
             }
         })
         .then((response)=>{
