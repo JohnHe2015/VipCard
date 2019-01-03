@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, Form, Input, Button, Col, Row, Icon, DatePicker, message, Spin} from 'antd';
+import {Card, Form, Input, Button, Col, Row, Icon, DatePicker, message, Select} from 'antd';
 import './index.less';
 import axios from './../../axios/axios';
 const FormItem = Form.Item;
@@ -97,7 +97,11 @@ class Register extends React.Component{
                                                 {max:3, min:1, message:'性别长度为1-3位'}
                                         ],
                                     })(
-                                        <Input prefix={<Icon type="heart" style={{color:"#655747"}} />} placeholder="性别" />
+                                        <Select placeholder="请选择性别" >
+                                            <Select.Option value={1}>男</Select.Option>
+                                            <Select.Option value={2}>女</Select.Option>
+                                        </Select>
+                                        // <Input prefix={<Icon type="heart" style={{color:"#655747"}} />} placeholder="性别" />
                                     )}
                                 </FormItem>
                                 <FormItem {...formItemLayout}>

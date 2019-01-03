@@ -8,7 +8,7 @@ const myAxios = {
         }
         return new Promise((resolve,reject)=>{
             axios({
-                //baseURL : 'http://47.98.138.190:8081/',
+                baseURL : 'http://api.zhengshuqian.com/',
                 //baseURL : 'http://localhost/',
                 url : options.url,
                 method : options.method || 'get',
@@ -42,7 +42,7 @@ const myAxios = {
         }
         return new Promise((resolve,reject)=>{
             axios({
-                //baseURL : 'http://47.98.138.190:8081/',
+                baseURL : 'http://api.zhengshuqian.com/',
                 //baseURL : 'http://localhost/',
                 url : options.url,
                 method : options.method || 'post',

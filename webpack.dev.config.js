@@ -46,9 +46,9 @@ module.exports = {
         // inline : true,
         // hot : true,
         compress : true,
-        proxy: [{
-            context: ["/user", "/wx","/coupon"],
-            target: "http://localhost:8081",
-        }]
+        // proxy: [{
+        //     context: ["/user", "/wx","/coupon"],
+        //     target: "http://api.zhengshuqian.com",
+        // }]
     }
 }

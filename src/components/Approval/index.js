@@ -91,11 +91,11 @@ export default class Approval extends React.Component{
                     parser={value => value.replace(/\¥\s?|(,*)/g, '')}/>
                     <br />
                     <Select placeholder="请选择类型" style={{width:130,marginLeft:100}}>
-                        <Select.Option value="1">全家福</Select.Option>
-                        <Select.Option value="2">婚纱</Select.Option>
-                        <Select.Option value="3">企业</Select.Option>
-                        <Select.Option value="4">个人</Select.Option>
-                        <Select.Option value="5">其它</Select.Option>
+                        <Select.Option value={1}>全家福</Select.Option>
+                        <Select.Option value={2}>婚纱</Select.Option>
+                        <Select.Option value={3}>企业</Select.Option>
+                        <Select.Option value={4}>个人</Select.Option>
+                        <Select.Option value={5}>其它</Select.Option>
                     </Select>
                 </Modal>
             ) 
@@ -157,6 +157,7 @@ export default class Approval extends React.Component{
             this.delData(data.id);         
             data.amount = amount;    //把消费金额传递给setCoupleData
             this.setCoupleData(data);
+            this.sendTemplate(data.id,level);  //最后给微信发送模版消息
             success(response);
             
         })
@@ -214,6 +215,43 @@ export default class Approval extends React.Component{
         .catch((err)=>{
             error("优惠券发放失败！请联系管理员");
             console.log(err);
+        });
+    }
+
+    sendTemplate =(id,level)=>{      //给微信发送优惠券消息
+        console.log(`level is  ${level}`); 
+        let type1="咖啡券",type2="拍摄券",type3="摄影券",type1Sum,type2Sum,type3Sum;
+        if(level == 1){
+            type1Sum = 2;
+            type2Sum = 0;
+            type3Sum = 0;
+        }
+        else
+        {
+            type1Sum = 6;
+            type2Sum = 1;
+            type3Sum = 2;
+        }
+        console.log(`typeSum : ${type3Sum}`);
+        axios.get({
+            url : '/wx/sendTemplate',
+            params : {
+                id : id,
+                level : level,
+                type1 : type1,
+                type2 : type2,
+                type3 : type3,
+                type1Sum : type1Sum,
+                type2Sum : type2Sum,
+                type3Sum : type3Sum,
+            }
+        })
+        .then((response)=>{
+           console.log('发送微信消息成功啦');
+        })
+        .catch((err)=>{
+            console.log(err);
+            error(err);
         });
     }
 

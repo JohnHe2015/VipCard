@@ -1,8 +1,9 @@
 import React from 'react';
 import { Table, Row, Col, Card, Input, Select, DatePicker, Icon, Button, Tooltip, Form} from 'antd';
 import axios from './../../axios/axios';
+import converter from './../../utils/converter'
 const FormItem = Form.Item;
-const { Column } = Table;
+import moment from 'moment';
 
 export default class User extends React.Component{
     constructor(props){
@@ -19,9 +20,13 @@ export default class User extends React.Component{
     }
 
     getData (){
-        let formData = this.formRef.getItemsValue();  //获取子Form的数据
+        let formData = this.formRef.props.form.getFieldsValue(); //获取子Form的数据
+        let birthday;
         // this.props.getFormRef(this.formRef.getItemsValue());
-        console.log(formData.birthday.format('YYYY-MM-DD')); 
+        if(formData.birthday)
+        {
+            birthday = moment(formData.birthday).format('YYYY-MM-DD');
+        }
         axios.get({
             url : '/user/get',
             isShowLoading : true,
@@ -32,7 +37,7 @@ export default class User extends React.Component{
                 mobile : formData.mobile || null,
                 sex : formData.sex || null,
                 level : formData.level || null,
-                birthday : formData.birthday.format('YYYY-MM-DD') || null
+                birthday : birthday || null
             }
         })
         .then((response)=>{
@@ -51,8 +56,61 @@ export default class User extends React.Component{
         this.state.pageSize = pageSize;
         this.getData();
     }
+
+    resetFields =()=>{
+        this.formRef.props.form.resetFields();   //调用子Form实例的resetForm方法清空表单
+        this.getData();    
+    }
     
     render(){
+        const columns =[
+            {
+                title : "用户名",
+                dataIndex : "username",
+                key : "username",
+            },   
+            {
+                title : "电话号码",   
+                dataIndex : "mobile",
+                key : "mobile",
+            },
+            {
+                title : "性别",
+                dataIndex : "sex",
+                key : "sex",
+                render : (sex)=>{
+                    return (
+                        sex == "1" ? "男" : "女"
+                    )
+                }
+            },
+            {
+                title : "生日",
+                dataIndex : "birthday",
+                key : "birthday"
+            },
+            {
+                title : "会员等级",
+                dataIndex : "level",
+                key : "level",
+                render : (level)=>{
+                    return (
+                        level == "1" ? "Musee会员" : "Vip会员"
+                    )
+                }
+            },
+            {
+                title : "注册日期",
+                dataIndex : "createTime",
+                key : "createTime",
+                render : (createTime)=>{
+                    return(
+                        converter.getFullDate(createTime)
+                    )
+                }
+            }
+        ];
+
         return(
             <div>
                 <Row>
@@ -73,14 +131,14 @@ export default class User extends React.Component{
                                         <Button onClick={()=>this.getData()} type="primary" shape="circle" icon="search" style={{marginRight:20}} />
                                     </Tooltip>
                                     <Tooltip placement="top" title="重置">
-                                        <Button type="primary" shape="circle" icon="reload" />
+                                        <Button onClick={()=>this.resetFields()} type="primary" shape="circle" icon="reload" />
                                     </Tooltip>
                                 </span>
                             } 
                             bordered={false}>
                             <Row>
                                 <Col span={24} >
-                                    <Table dataSource={this.state.dataSource} rowKey="id" bordered={true} 
+                                    <Table dataSource={this.state.dataSource} rowKey="id" bordered={true} rowKey="id" columns={columns}
                                         pagination={{
                                             pageSize : this.state.pageSize,
                                             current : this.state.page,
@@ -89,38 +147,12 @@ export default class User extends React.Component{
                                             total :this.state.count,
                                             onChange : this.changePage
                                         }}
-                                    >
-                                        <Column
-                                            title="用户名"
-                                            dataIndex="username"
-                                            key="username"
-                                            />
-                                        <Column
-                                            title="电话号码"
-                                            dataIndex="mobile"
-                                            key="mobile"
-                                        />
-                                        <Column
-                                            title="性别"
-                                            dataIndex="sex"
-                                            key="sex"
-                                        />
-                                        <Column
-                                            title="生日"
-                                            dataIndex="birthday"
-                                            key="birthday"
-                                        />
-                                        <Column
-                                            title="会员等级"
-                                            dataIndex="level"
-                                            key="level"
-                                        />
-                                        <Column
-                                            title="注册日期"
-                                            dataIndex="createTime"
-                                            key="createTime"
-                                        />
-
+                                        onRow={(record)=>{
+                                            return {
+                                                //onClick: () => {console.log(record)},   //此处添加事件
+                                            };
+                                        }}
+                                    >   
                                     </Table>
                                 </Col>
                             </Row>   
@@ -138,11 +170,6 @@ class UserForm extends React.Component{
     constructor(props){
         super(props);
     }
-    getItemsValue = ()=>{    
-        const valus= this.props.form.getFieldsValue();
-        return valus;
-    }
-
     render(){
         const {getFieldDecorator} = this.props.form;
         return(
@@ -166,8 +193,8 @@ class UserForm extends React.Component{
                         
                     })(
                         <Select placeholder="请选择性别" style={{width:120,marginRight:20}}>
-                            <Select.Option value="1">男</Select.Option>
-                            <Select.Option value="2">女</Select.Option>
+                            <Select.Option value={1}>男</Select.Option>
+                            <Select.Option value={2}>女</Select.Option>
                         </Select>
                     )}        
                 </FormItem>
@@ -176,8 +203,8 @@ class UserForm extends React.Component{
                         
                     })(
                         <Select placeholder="会员等级" style={{width:130,marginRight:20}}>
-                            <Select.Option value="1">Musee会员</Select.Option>
-                            <Select.Option value="2">Vip会员</Select.Option>
+                            <Select.Option value={1}>Musee会员</Select.Option>
+                            <Select.Option value={2}>Vip会员</Select.Option>
                         </Select>
                     )}        
                 </FormItem>
@@ -185,7 +212,7 @@ class UserForm extends React.Component{
                     {getFieldDecorator('birthday', {
                         
                     })(
-                        <DatePicker allowClear={false} format="YYYY-MM-DD" placeholder="选择生日" style={{marginRight:20}} />
+                        <DatePicker format="YYYY-MM-DD" allowClear={false} placeholder="选择生日" style={{marginRight:20}} />
                     )}          
                 </FormItem>              
             </Form>
