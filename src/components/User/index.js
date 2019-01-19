@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Row, Col, Card, Input, Select, DatePicker, Icon, Button, Tooltip, Form} from 'antd';
+import { Table, Row, Col, Card, Input, Select, DatePicker, Icon, Button, Tooltip, Form, List} from 'antd';
 import axios from './../../axios/axios';
 import converter from './../../utils/converter'
 const FormItem = Form.Item;
@@ -12,11 +12,53 @@ export default class User extends React.Component{
             dataSource : [],
             page : 1,        //分页计算后台node处理
             pageSize: 8,    //一页显示条数
+            dayCount: 0,
+            weekCount: 0,
+            monthCount: 0
         }
     }
 
     componentDidMount(){
         this.getData();
+        this.getCount();
+    }
+    getCount (){
+        let now = moment().format('YYYY-MM-DD');
+        const promise1 = axios.get({
+            url : '/user/getCount',
+            params : {
+                timestamp : now,
+                type : 'day'
+            }
+        })
+
+        const promise2 = axios.get({
+            url : '/user/getCount',
+            params : {
+                timestamp : now,
+                type : 'week'
+            }
+        })
+        
+        const promise3 = axios.get({
+            url : '/user/getCount',
+            params : {
+                timestamp : now,
+                type : 'month'
+            }
+        })
+
+        Promise.all([promise1, promise2, promise3]).then((resultList)=>{
+            // this.state.dayCount = 
+            // this.state.weekCount = 
+            // this.state.monthCount = 
+            this.setState({
+                dayCount: JSON.parse(resultList[0].result)[0].count,
+                weekCount: JSON.parse(resultList[1].result)[0].count,
+                monthCount: JSON.parse(resultList[2].result)[0].count
+            })
+        }); 
+        
     }
 
     getData (){
@@ -63,6 +105,21 @@ export default class User extends React.Component{
     }
     
     render(){
+        const listTitle = [
+            {
+                title: '今日注册数',
+                count: this.state.dayCount
+            },
+            {
+                title: '近一周注册数',
+                count: this.state.weekCount
+            },
+            {
+                title: '近一个月注册数',
+                count: this.state.monthCount
+            },
+
+        ];
         const columns =[
             {
                 title : "用户名",
@@ -115,9 +172,17 @@ export default class User extends React.Component{
             <div>
                 <Row>
                     <Col span={24}>
-                        <Card title="欢迎宝贝" bordered={false} style={{marginBottom:'30px',marginTop:'30px'}}>
-                            <p>这里是用户的管理</p>
-                        </Card>
+                        <List
+                        style={{marginBottom:'30px',marginTop:'30px',textAlign:'center'}}
+                        grid={{ gutter: 16, column: 3 }}
+                        dataSource={listTitle}
+                        renderItem={item => (
+                            <List.Item>
+                                <Card title={item.title}>{item.count}</Card>
+                            </List.Item>
+                        )}>
+                        
+                        </List>
                     </Col>
                 </Row>
                 <Row>
