@@ -178,7 +178,7 @@ export default class User extends React.Component{
                         dataSource={listTitle}
                         renderItem={item => (
                             <List.Item>
-                                <Card title={item.title}>{item.count}</Card>
+                                <Card style={{fontSize:'22px',color:'blue'}} title={item.title}>{item.count}</Card>
                             </List.Item>
                         )}>
                         
