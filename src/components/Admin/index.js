@@ -8,7 +8,7 @@ import './index.less';
 export default class Admin extends React.Component{
     render(){
         return(
-            <div>
+            <div style={{height:"100%"}}>
                 <Header />
                 <div className="admin-container">
                     <SideBar />
