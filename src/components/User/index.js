@@ -4,6 +4,15 @@ import axios from './../../axios/axios';
 import converter from './../../utils/converter'
 const FormItem = Form.Item;
 import moment from 'moment';
+// 引入 ECharts 主模块
+import echarts from 'echarts/lib/echarts';
+// 引入柱状图
+import  'echarts/lib/chart/bar';
+import  'echarts/lib/chart/pie';
+// 引入提示框和标题组件
+import 'echarts/lib/component/tooltip';
+import 'echarts/lib/component/title';
+import pieOptions from './../../chartConfig/pie';
 
 export default class User extends React.Component{
     constructor(props){
@@ -21,7 +30,29 @@ export default class User extends React.Component{
     componentDidMount(){
         this.getData();
         this.getCount();
+        this.initChart();
     }
+    initChart (){
+        let lineChart = echarts.init(document.getElementById('lineChart'));
+        let pieChart = echarts.init(document.getElementById('pieChart'));
+        // 绘制图表
+        lineChart.setOption({
+            title: { text: '用户数量趋势' },
+            tooltip: {},
+            xAxis: {
+                data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+            },
+            yAxis: {},
+            series: [{
+                name: '销量',
+                type: 'bar',
+                data: [5, 20, 36, 10, 10, 20]
+            }]
+        });
+
+        pieChart.setOption(pieOptions)
+    }
+
     getCount (){
         let now = moment().format('YYYY-MM-DD');
         const promise1 = axios.get({
@@ -184,6 +215,20 @@ export default class User extends React.Component{
                         
                         </List>
                     </Col>
+                </Row>
+                <Row>
+                    <Col span={12} style={{paddingRight:20,marginBottom:20}}>
+                        <Card style={{fontSize:'22px',color:'blue'}}>
+                            <div id="lineChart" style={{width:'100%',height: '280px' }}>
+                            </div>
+                        </Card>  
+                    </Col>
+                    <Col span={12}>
+                        <Card style={{fontSize:'22px',color:'blue'}}>
+                            <div id="pieChart" style={{width:'100%',height: '280px' }}>
+                            </div>
+                        </Card>  
+                    </Col>    
                 </Row>
                 <Row>
                     <Col span={24}>
