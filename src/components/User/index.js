@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table, Row, Col, Card, Input, Select, DatePicker, Icon, Button, Tooltip, Form, List} from 'antd';
+const { Option, OptGroup } = Select;
 import axios from './../../axios/axios';
 import converter from './../../utils/converter'
 const FormItem = Form.Item;
@@ -12,7 +13,7 @@ import  'echarts/lib/chart/pie';
 // 引入提示框和标题组件
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/title';
-import pieOptions from './../../chartConfig/pie';
+//import getPieData from './../../chartConfig/pie';
 
 export default class User extends React.Component{
     constructor(props){
@@ -23,7 +24,8 @@ export default class User extends React.Component{
             pageSize: 8,    //一页显示条数
             dayCount: 0,
             weekCount: 0,
-            monthCount: 0
+            monthCount: 0,
+            pieChartData : this.getPieData('1')
         }
     }
 
@@ -49,8 +51,8 @@ export default class User extends React.Component{
                 data: [5, 20, 36, 10, 10, 20]
             }]
         });
-
-        pieChart.setOption(pieOptions)
+        console.log(this.state.pieChartData);
+        pieChart.setOption(this.state.pieChartData)
     }
 
     getCount (){
@@ -133,6 +135,69 @@ export default class User extends React.Component{
     resetFields =()=>{
         this.formRef.props.form.resetFields();   //调用子Form实例的resetForm方法清空表单
         this.getData();    
+    }
+
+    getPieData =(type)=>{
+        console.log('first');
+        var result = {};
+        axios.get({
+            url : '/user/pieChart',
+            isShowLoading : true,
+            params : {
+                type : type 
+            }
+        })
+        .then((response)=>{
+            console.log(response);
+            result = {
+                title : {
+                    text: '用户分布',
+                    subtext: '纯属虚构',
+                    x:'center'
+                },
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+                },
+                series : [
+                    {
+                        name: '访问来源',
+                        type: 'pie',
+                        radius : '55%',
+                        center: ['50%', '60%'],
+                        data:[
+                            {value:335, name:'直接访问'},
+                            {value:310, name:'邮件营销'},
+                            {value:234, name:'联盟广告'},
+                            {value:135, name:'视频广告'},
+                            {value:1548, name:'搜索引擎'}
+                        ],
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            }
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+        return result;
+    }
+    
+
+    handleSelectChange =(value)=>{
+        this.getPieData(value);
+        this.initChart();
     }
     
     render(){
@@ -218,15 +283,30 @@ export default class User extends React.Component{
                 </Row>
                 <Row>
                     <Col span={12} style={{paddingRight:20,marginBottom:20}}>
-                        <Card style={{fontSize:'22px',color:'blue'}}>
+                        <Card style={{fontSize:'22px',color:'blue',position:'relative'}}>
                             <div id="lineChart" style={{width:'100%',height: '280px' }}>
                             </div>
+                            <Select placeholder="请选择日期" style={{position:'absolute',right:50,top:25,width:120}}>
+                                <OptGroup label="请选择日期">
+                                    <Option value="1">性别</Option>
+                                    <Option value="2">会员等级</Option>
+                                </OptGroup>
+                            </Select>
                         </Card>  
                     </Col>
                     <Col span={12}>
-                        <Card style={{fontSize:'22px',color:'blue'}}>
+                        <Card style={{fontSize:'22px',color:'blue',position:'relative'}}>
                             <div id="pieChart" style={{width:'100%',height: '280px' }}>
                             </div>
+                            <Select placeholder="选择类别" 
+                                style={{position:'absolute',right:50,top:25,width:120}}
+                                onChange={this.handleSelectChange}
+                            >
+                            <OptGroup label="请选择类别">
+                                <Option value="1">性别</Option>
+                                <Option value="2">会员等级</Option>
+                            </OptGroup>
+                            </Select>
                         </Card>  
                     </Col>    
                 </Row>
