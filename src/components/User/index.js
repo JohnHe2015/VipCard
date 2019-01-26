@@ -8,7 +8,7 @@ import moment from 'moment';
 // 引入 ECharts 主模块
 import echarts from 'echarts/lib/echarts';
 // 引入柱状图
-import  'echarts/lib/chart/bar';
+import  'echarts/lib/chart/line';
 import  'echarts/lib/chart/pie';
 // 引入提示框和标题组件
 import 'echarts/lib/component/tooltip';
@@ -25,34 +25,43 @@ export default class User extends React.Component{
             dayCount: 0,
             weekCount: 0,
             monthCount: 0,
-            pieChartData : this.getPieData('1')
+            year: []
         }
     }
 
     componentDidMount(){
         this.getData();
         this.getCount();
+        this.initSelect();
         this.initChart();
+       
     }
+    //初始化chart的数据
     initChart (){
-        let lineChart = echarts.init(document.getElementById('lineChart'));
-        let pieChart = echarts.init(document.getElementById('pieChart'));
-        // 绘制图表
-        lineChart.setOption({
-            title: { text: '用户数量趋势' },
-            tooltip: {},
-            xAxis: {
-                data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
-            },
-            yAxis: {},
-            series: [{
-                name: '销量',
-                type: 'bar',
-                data: [5, 20, 36, 10, 10, 20]
-            }]
-        });
-        console.log(this.state.pieChartData);
-        pieChart.setOption(this.state.pieChartData)
+        this.getLineData('2019');
+        this.getPieData('1');
+    }
+    //初始化line图下拉框数据
+    initSelect(){
+        axios.get({
+            url : '/user/year',
+            isShowLoading : true,
+            params : {
+            }
+        })
+        .then((response)=>{
+            if(response.errcode == "0")
+            {
+                // this.state.year = JSON.parse(response.result);
+                this.setState({
+                    year : JSON.parse(response.result),
+                })
+            }
+            
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
     }
 
     getCount (){
@@ -138,8 +147,8 @@ export default class User extends React.Component{
     }
 
     getPieData =(type)=>{
-        console.log('first');
-        var result = {};
+        let pieChart = echarts.init(document.getElementById('pieChart'));
+        let _type = type == "1" ? "性别" : "会员等级";
         axios.get({
             url : '/user/pieChart',
             isShowLoading : true,
@@ -148,11 +157,13 @@ export default class User extends React.Component{
             }
         })
         .then((response)=>{
-            console.log(response);
-            result = {
+            console.log(JSON.parse(response.y_data));
+            console.log(JSON.parse(response.x_data));
+            
+            const result = {
                 title : {
-                    text: '用户分布',
-                    subtext: '纯属虚构',
+                    text: '用户数量统计',
+                    subtext: `${_type}统计`,
                     x:'center'
                 },
                 tooltip : {
@@ -162,21 +173,15 @@ export default class User extends React.Component{
                 legend: {
                     orient: 'vertical',
                     left: 'left',
-                    data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+                    data: JSON.parse(response.x_data)
                 },
                 series : [
                     {
-                        name: '访问来源',
+                        name: '数量',
                         type: 'pie',
                         radius : '55%',
                         center: ['50%', '60%'],
-                        data:[
-                            {value:335, name:'直接访问'},
-                            {value:310, name:'邮件营销'},
-                            {value:234, name:'联盟广告'},
-                            {value:135, name:'视频广告'},
-                            {value:1548, name:'搜索引擎'}
-                        ],
+                        data:JSON.parse(response.y_data),
                         itemStyle: {
                             emphasis: {
                                 shadowBlur: 10,
@@ -187,17 +192,53 @@ export default class User extends React.Component{
                     }
                 ]
             }
+            pieChart.setOption(result);
         })
         .catch((err)=>{
             console.log(err);
         })
-        return result;
+    }
+
+    getLineData =(year)=>{
+        console.log(year);
+        let _year = year;
+        let lineChart = echarts.init(document.getElementById('lineChart'));
+        axios.get({
+            url : '/user/lineChart',
+            isShowLoading : true,
+            params : {
+                year : _year 
+            }
+        })
+        .then((response)=>{         
+            const result = {
+                title: { text: `${_year}年用户数量趋势` },
+                tooltip: {},
+                xAxis: {
+                    data: JSON.parse(response.x_data)
+                },
+                yAxis: {},
+                series: [{
+                    name: '注册数',
+                    type: 'line',
+                    data: JSON.parse(response.y_data)
+                }]
+            };
+            lineChart.setOption(result);
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+    }
+
+    onLineSelect =(year)=>{
+        this.getLineData(year);
     }
     
 
     handleSelectChange =(value)=>{
         this.getPieData(value);
-        this.initChart();
+       
     }
     
     render(){
@@ -286,10 +327,13 @@ export default class User extends React.Component{
                         <Card style={{fontSize:'22px',color:'blue',position:'relative'}}>
                             <div id="lineChart" style={{width:'100%',height: '280px' }}>
                             </div>
-                            <Select placeholder="请选择日期" style={{position:'absolute',right:50,top:25,width:120}}>
-                                <OptGroup label="请选择日期">
-                                    <Option value="1">性别</Option>
-                                    <Option value="2">会员等级</Option>
+                            <Select onSelect={this.onLineSelect} placeholder="请选择年份" style={{position:'absolute',right:50,top:25,width:120}}>
+                                <OptGroup label="请选择年份">
+                                    {this.state.year.map((item,index)=>{
+                                        return(
+                                        <Option key={index+1} value={item.year}>{item.year}</Option>
+                                        )
+                                    })}
                                 </OptGroup>
                             </Select>
                         </Card>  

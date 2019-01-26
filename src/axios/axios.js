@@ -9,7 +9,7 @@ const myAxios = {
         return new Promise((resolve,reject)=>{
             axios({
                 baseURL : 'http://api.zhengshuqian.com/',
-                //baseURL : 'http://localhost/',
+                //baseURL : 'http://localhost:8081/',
                 url : options.url,
                 method : options.method || 'get',
                 params : options.params || {},
